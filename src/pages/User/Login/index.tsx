@@ -1,6 +1,11 @@
+// 引入底部组件
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
+// 引入登录api
+import { login } from '@/services/admin/login';
+// import { login } from '@/services/ant-design-pro/api';
+// 引入模拟验证码api
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+// 引入antd图标
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -9,17 +14,24 @@ import {
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
+// 引入antd pro组件
 import {
   LoginForm,
   ProFormCaptcha,
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
+// css in js
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, history, SelectLang, useIntl, useModel, Helmet } from '@umijs/max';
+// 引入umi组件
+import { FormattedMessage, history, SelectLang, useIntl,useModel, Helmet } from '@umijs/max';
+// 引入antd组件
 import { Alert, message, Tabs } from 'antd';
+// 引入公共配置
 import Settings from '../../../../config/defaultSettings';
+// 引入react
 import React, { useState } from 'react';
+// 引入react-dom
 import { flushSync } from 'react-dom';
 
 const ActionIcons = () => {
@@ -94,8 +106,8 @@ const Login: React.FC = () => {
       flexDirection: 'column',
       height: '100vh',
       overflow: 'auto',
-      backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
+      // backgroundImage:
+      //   "url('https://dogefs.s3.ladydaily.com/~/source/wallhaven/full/zy/wallhaven-zyz25o.jpg?w=2560&h=1440&fmt=webp')",
       backgroundSize: '100% 100%',
     };
   });
@@ -108,7 +120,7 @@ const Login: React.FC = () => {
       flushSync(() => {
         setInitialState((s) => ({
           ...s,
-          currentUser: userInfo,
+          userInfo: userInfo,
         }));
       });
     }
@@ -118,11 +130,17 @@ const Login: React.FC = () => {
     try {
       // 登录
       const msg = await login({ ...values, type });
-      if (msg.status === 'ok') {
+      if (msg.status === 0) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
+        if(msg.token) {
+          localStorage.setItem('token',msg.token);
+        }
+        if(msg.id !== 0) {
+          localStorage.setItem('id',msg.id+'');
+        }
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
@@ -141,7 +159,7 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status, type: loginType } = userLoginState;
+  const { status } = userLoginState;
 
   return (
     <div className={containerClassName}>
@@ -166,9 +184,9 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+          // logo={<img alt="logo" src="/logo.svg" />}
+          // title="Ant Design"
+          // subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
           initialValues={{
             autoLogin: true,
           }}
@@ -206,11 +224,11 @@ const Login: React.FC = () => {
             ]}
           />
 
-          {status === 'error' && loginType === 'account' && (
+          {status === 1 && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
+                defaultMessage: '登录失败，请检查账户名和密码',
               })}
             />
           )}
@@ -226,6 +244,7 @@ const Login: React.FC = () => {
                   id: 'pages.login.username.placeholder',
                   defaultMessage: '用户名: admin or user',
                 })}
+                initialValue={'admin2'}
                 rules={[
                   {
                     required: true,
@@ -248,6 +267,7 @@ const Login: React.FC = () => {
                   id: 'pages.login.password.placeholder',
                   defaultMessage: '密码: ant.design',
                 })}
+                initialValue={'123456'}
                 rules={[
                   {
                     required: true,
@@ -263,7 +283,7 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
+          {/* {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />} */}
           {type === 'mobile' && (
             <>
               <ProFormText

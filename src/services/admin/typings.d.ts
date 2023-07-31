@@ -24,9 +24,12 @@ declare namespace API {
   };
 
   type LoginResult = {
-    status?: string;
-    type?: string;
-    currentAuthority?: string;
+    status?: number;
+    // type?: string;
+    message?: string;
+    token?: string;
+    // currentAuthority?: string;
+    id?: number;
   };
 
   type PageParams = {
@@ -68,6 +71,11 @@ declare namespace API {
     type?: string;
   };
 
+  type UserInfoParams = {
+    id?: number;
+    token?: string;
+  };
+
   type ErrorResponse = {
     /** 业务约定的错误码 */
     errorCode: string;
@@ -98,4 +106,18 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type UserInfo = {
+    id?: number;
+    username?: string;
+    nickname?: string;
+    email?: string;
+    user_pic?: string;
+    phone?: string;
+    introduction?: string;
+    sex?: string;
+    address?: string;
+  }
 }
+
+

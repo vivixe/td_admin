@@ -89,7 +89,20 @@ export const errorConfig: RequestConfig = {
   requestInterceptors: [
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
-      const url = config?.url?.concat('?token = 123');
+      // const url = config?.url?.concat('?token = ' + localStorage.getItem('token') || '');
+      // 如果url开头是/my/,则Headers带上token
+      const url = config?.url || '';
+      if (url.startsWith('/api/my/')) {
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers = {
+            ...config.headers,
+            Authorization: token ,
+          };
+          console.log('%c [ config.headers ]-99', 'font-size:16px; background:#1fbfa7; color:#63ffeb;', config.headers)
+
+        }
+      }
       return { ...config, url };
     },
   ],
