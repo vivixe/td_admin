@@ -9,17 +9,18 @@ import {
     ProTable,
 } from '@ant-design/pro-components';
 import { Button } from 'antd';
+// import { getWorkerList } from '@/services/admin/worker'
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { FormattedMessage, useIntl } from '@umijs/max';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
 
-const handleAdd = (fields: API.RuleListItem) => {
+const handleAdd = (fields: API.WorkerListItem) => {
     console.log(fields);
     return true;
 }
 
-const handleUpdate = (fields: API.RuleListItem) => {
+const handleUpdate = (fields: API.WorkerListItem) => {
     console.log(fields);
     return true;
 }
@@ -31,11 +32,11 @@ const WorkerList: React.FC = () => {
     const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
     const actionRef = useRef<ActionType>();
-    const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
+    const [currentRow, setCurrentRow] = useState<API.WorkerListItem>();
 
     const intl = useIntl();
 
-    const columns: ProColumns<API.RuleListItem>[] = [
+    const columns: ProColumns<API.WorkerListItem>[] = [
         {
             title: (
                 <FormattedMessage
@@ -144,7 +145,7 @@ const WorkerList: React.FC = () => {
 
     return (
         <PageContainer>
-            <ProTable<API.RuleListItem, API.PageParams>
+            <ProTable<API.WorkerListItem, API.PageParams>
                 headerTitle={intl.formatMessage({
                     id: 'pages.searchTable.title',
                     defaultMessage: '查询表格',
@@ -165,16 +166,7 @@ const WorkerList: React.FC = () => {
                         <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
                     </Button>,
                 ]}
-                // request = {
-                //     async (params, sorter, filter) => {
-                //         const {data : res} = await rule({ ...params, sorter, filter });
-                //         return {
-                //             data: res.list,
-                //             success: true,
-                //             total: res.totalCount,
-                //         }
-                //     }
-                // }
+                // request={getWorkerList}
                 columns={columns}
                 rowSelection={{}}
             />
@@ -187,7 +179,7 @@ const WorkerList: React.FC = () => {
                 open={createModalOpen}
                 onOpenChange={handleModalOpen}
                 onFinish={async (value) => {
-                    const success = await handleAdd(value as API.RuleListItem);
+                    const success = await handleAdd(value as API.WorkerListItem);
                     if (success) {
                         handleModalOpen(false);
                         if (actionRef.current) {

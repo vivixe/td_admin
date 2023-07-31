@@ -117,7 +117,37 @@ declare namespace API {
     introduction?: string;
     sex?: string;
     address?: string;
+  };
+
+  type WorkerListParams = {
+    name?: string;
+    position_name?: string;
+    position_type?: string;
+    members?: string;
+  };
+
+  type WorkerListItem = {
+    // select a.id,a.name as name,a.date,a.status,a.age,a.address,a.email,a.phone,a.avatar,a.sex,b.name as position_name,b.type as position_type from worker_info a left join position_info b on a.position_id = b.id 
+    id?: number;
+    name?: string;
+    date?: string;
+    status?: string;
+    age?: number;
+    address?: string;
+    email?: string;
+    phone?: string;
+    avatar?: string;
+    sex?: string;
+    position_name?: string;
+    position_type?: string;
   }
+
+  type WorkerList = {
+    data?: WorkerListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+    success?: boolean;
+  };
 }
 
 
