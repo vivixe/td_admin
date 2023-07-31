@@ -1,10 +1,10 @@
 
 type WorkerFormProps = {
     // children: React.ReactNode;
-    onSubmit: (values: Partial<API.RuleListItem>) => Promise<void>;
+    onSubmit: (values: Partial<API.WorkerListItem>) => Promise<void>;
     onCancel: () => void;
     updateModalOpen: boolean;
-    values: Partial<API.RuleListItem>;
+    values: Partial<API.WorkerListItem>;
     name: string;
 };
 

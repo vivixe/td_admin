@@ -8,7 +8,7 @@ export async function getWorkerList(params: {
     /** 页面的容量 */
     pageSize?: number;
   },body: API.WorkerListParams, options?: { [key: string]: any }) {
-    return request<{data :API.WorkerList}>("/api/my/worker/list", {
+    return request<API.WorkerList>("/api/my/worker/list", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",

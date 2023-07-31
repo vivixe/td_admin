@@ -9,7 +9,7 @@ import {
     ProTable,
 } from '@ant-design/pro-components';
 import { Button } from 'antd';
-// import { getWorkerList } from '@/services/admin/worker'
+import { getWorkerList } from '@/services/admin/worker'
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { FormattedMessage, useIntl } from '@umijs/max';
 import React, { useRef, useState } from 'react';
@@ -166,7 +166,7 @@ const WorkerList: React.FC = () => {
                         <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
                     </Button>,
                 ]}
-                // request={getWorkerList}
+                request={getWorkerList}
                 columns={columns}
                 rowSelection={{}}
             />
@@ -215,6 +215,7 @@ const WorkerList: React.FC = () => {
                             actionRef.current.reload();
                         }
                     }
+                    console.log(value);
                 }}
                 onCancel={() => {
                     handleUpdateModalOpen(false);
