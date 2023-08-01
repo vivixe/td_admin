@@ -1,7 +1,7 @@
 import { getWorkerList } from '@/services/admin/worker';
 import { PlusOutlined } from '@ant-design/icons';
 import {
-  // FooterToolbar,
+  FooterToolbar,
   ModalForm,
   PageContainer,
   // ProDescriptions,
@@ -25,6 +25,23 @@ const handleUpdate = (fields: API.WorkerListItem) => {
   return true;
 };
 
+const handleRemove = async (selectedRows: API.WorkerListItem[]) => {
+  // const hide = message.loading('正在删除');
+  if (!selectedRows) return true;
+  // try {
+  //   await removeRule({
+  //     key: selectedRows.map((row) => row.key),
+  //   });
+  //   hide();
+  //   message.success('Deleted successfully and will refresh soon');
+  //   return true;
+  // } catch (error) {
+  //   hide();
+  //   message.error('Delete failed, please try again');
+  //   return false;
+  // }
+};
+
 const WorkerList: React.FC = () => {
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
 
@@ -32,6 +49,8 @@ const WorkerList: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.WorkerListItem>();
+
+  const [selectedRowsState, setSelectedRows] = useState<API.WorkerListItem[]>([]);
 
   const intl = useIntl();
 
@@ -167,12 +186,55 @@ const WorkerList: React.FC = () => {
         ]}
         request={getWorkerList}
         columns={columns}
-        rowSelection={{}}
+        rowSelection={{
+          onChange: (_, selectedRows) => {
+            setSelectedRows(selectedRows);
+          },
+        }}
       />
+      {selectedRowsState?.length > 0 && (
+        <FooterToolbar
+          extra={
+            <div>
+              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
+              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
+              &nbsp;&nbsp;
+              <span>
+                <FormattedMessage
+                  id="pages.searchTable.totalServiceCalls"
+                  defaultMessage="Total number of service calls"
+                />{' '}
+                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
+                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
+              </span>
+            </div>
+          }
+        >
+          <Button
+            onClick={async () => {
+              await handleRemove(selectedRowsState);
+              setSelectedRows([]);
+              actionRef.current?.reloadAndRest?.();
+            }}
+          >
+            <FormattedMessage
+              id="pages.searchTable.batchDeletion"
+              defaultMessage="Batch deletion"
+            />
+          </Button>
+          <Button type="primary">
+            <FormattedMessage
+              id="pages.searchTable.batchApproval"
+              defaultMessage="Batch approval"
+            />
+          </Button>
+        </FooterToolbar>
+      )}
       <ModalForm
         title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New rule',
+          id: 'pages.workerTable.createForm.newRule',
+          defaultMessage: '新建职员',
         })}
         width="400px"
         open={createModalOpen}
