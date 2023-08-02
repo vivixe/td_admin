@@ -127,7 +127,7 @@ declare namespace API {
   };
 
   type WorkerListItem = {
-    // select a.id,a.name as name,a.date,a.status,a.age,a.address,a.email,a.phone,a.avatar,a.sex,b.name as position_name,b.type as position_type from worker_info a left join position_info b on a.position_id = b.id 
+    // select a.id,a.name as name,a.date,a.status,a.age,a.address,a.email,a.phone,a.avatar,a.sex,b.name as position_name,b.type as position_type from worker_info a left join position_info b on a.position_id = b.id
     id?: number;
     name?: string;
     date?: string;
@@ -140,7 +140,7 @@ declare namespace API {
     sex?: string;
     position_name?: string;
     position_type?: string;
-  }
+  };
 
   type WorkerList = {
     data?: WorkerListItem[];
@@ -148,6 +148,21 @@ declare namespace API {
     total?: number;
     success?: boolean;
   };
+
+  type PositionListParams = {
+    name?: string;
+    type?: string;
+  };
+
+  type PositionListItem = {
+    id?: number;
+    name?: string;
+    type?: string;
+  };
+
+  type PositionList = {
+    data?: PositionListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+  };
 }
-
-
