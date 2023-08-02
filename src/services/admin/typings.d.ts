@@ -147,7 +147,24 @@ declare namespace API {
     /** 列表的内容总数 */
     total?: number;
     success?: boolean;
+  }
+
+  type PositionListParams = {
+    name?: string;
+    type?: string;
   };
+
+  type PositionListItem = {
+    id?: number;
+    name?: string;
+    type?: string;
+  }
+
+  type PositionList = {
+    data?: PositionListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+  }
 }
 
 
