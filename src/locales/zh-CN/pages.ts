@@ -65,5 +65,5 @@ export default {
   'pages.workerTable.workerName': '职员姓名',
   'pages.workerTable.workerPosition': '职位',
   'pages.workerTable.workerContact': '联系方式',
-  
+  'pages.workerTable.createForm.newWorker': '新建职员',
 };

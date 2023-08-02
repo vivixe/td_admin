@@ -9,9 +9,11 @@ import {
   ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
+// 引入antd图标
+import { MailOutlined, ManOutlined, MobileOutlined, WomanOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button } from 'antd';
+import { Avatar, Button, Popover } from 'antd';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
 
@@ -54,6 +56,29 @@ const WorkerList: React.FC = () => {
 
   const intl = useIntl();
 
+  // 声明一个content变量，用于存放弹出框的内容，包括姓名、职位、联系方式
+  const content = (
+    <div style={{ display: 'flex' }}>
+      <Avatar size={64} src={currentRow?.avatar} shape="square">
+        {currentRow?.name}
+      </Avatar>
+      <div style={{ marginLeft: 8 }}>
+        <p>年龄：{currentRow?.age}</p>
+        {currentRow?.sex === 'male' ? (
+          <p>
+            性别：
+            <ManOutlined style={{ color: '#08c' }} />
+          </p>
+        ) : (
+          <p>
+            性别：
+            <WomanOutlined style={{ color: 'rgb(255, 173, 210)' }} />
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
   const columns: ProColumns<API.WorkerListItem>[] = [
     {
       title: <FormattedMessage id="pages.workerTable.workerName" defaultMessage="职员姓名" />,
@@ -66,8 +91,27 @@ const WorkerList: React.FC = () => {
               setCurrentRow(entity);
             }}
           >
-            {dom}
+            <Popover content={content} title={entity.name} trigger="click">
+              {dom}
+            </Popover>
           </a>
+        );
+      },
+    },
+    {
+      title: <FormattedMessage id="pages.workerTable.workerId" defaultMessage="职员ID" />,
+      dataIndex: 'id',
+      hideInForm: true,
+      hideInSearch: true,
+      render: (dom, entity) => {
+        return (
+          <div
+            onClick={() => {
+              setCurrentRow(entity);
+            }}
+          >
+            {dom}
+          </div>
         );
       },
     },
@@ -96,8 +140,9 @@ const WorkerList: React.FC = () => {
               setCurrentRow(entity);
             }}
           >
-            {/* {dom} */}
+            <MobileOutlined style={{ marginRight: 8, fontSize: 16, color: '#08c' }} />
             {entity.phone}
+            <MailOutlined style={{ marginLeft: 8, marginRight: 8, fontSize: 16, color: '#08c' }} />
             {entity.email}
           </div>
         );
@@ -169,7 +214,7 @@ const WorkerList: React.FC = () => {
           defaultMessage: '查询表格',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey={(record) => record.id + ''}
         search={{
           labelWidth: 120,
         }}
@@ -205,7 +250,7 @@ const WorkerList: React.FC = () => {
                   id="pages.searchTable.totalServiceCalls"
                   defaultMessage="Total number of service calls"
                 />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
+                {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '}
                 <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
               </span>
             </div>
@@ -233,7 +278,7 @@ const WorkerList: React.FC = () => {
       )}
       <ModalForm
         title={intl.formatMessage({
-          id: 'pages.workerTable.createForm.newRule',
+          id: 'pages.workerTable.createForm.newWorker',
           defaultMessage: '新建职员',
         })}
         width="400px"

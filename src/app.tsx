@@ -6,11 +6,9 @@ import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history, Link } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
-import { errorConfig } from './requestErrorConfig';
-// import { userInfo as queryCurrentUser } from './services/ant-design-pro/api';
-import { getUserInfo } from './services/admin/userinfo';
-import React from 'react';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
+import { errorConfig } from './requestErrorConfig';
+import { getUserInfo } from './services/admin/userinfo';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -53,7 +51,11 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   console.log('initialState', initialState);
-  console.log('%c [ initialState?.userInfo?.user_pic ]-60', 'font-size:16px; background:#718e16; color:#b5d25a;', initialState?.userInfo)
+  console.log(
+    '%c [ initialState?.userInfo?.user_pic ]-60',
+    'font-size:16px; background:#718e16; color:#b5d25a;',
+    initialState?.userInfo,
+  );
 
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
@@ -72,7 +74,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.userInfo && location.pathname !== loginPath) {
-        // history.push(loginPath);
+        history.push(loginPath);
         console.log('没有登录');
       }
     },
