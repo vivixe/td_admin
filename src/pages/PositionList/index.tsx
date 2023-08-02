@@ -106,36 +106,21 @@ const PositionList: React.FC = () => {
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
-        default: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
-          ),
-          status: 'Default',
-        },
+        0: {
+            text: (
+              <FormattedMessage
+                id="pages.searchTable.nameStatus.abnormal"
+                defaultMessage="Abnormal"
+              />
+            ),
+            status: 'Error',
+          },
         1: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
-          ),
-          status: 'Processing',
-        },
-        2: {
           text: (
             <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
           ),
           status: 'Success',
-        },
-        3: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
-            />
-          ),
-          status: 'Error',
-        },
+        }
       },
     },
     {
