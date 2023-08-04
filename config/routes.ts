@@ -75,6 +75,29 @@ export default [
     ]
   },
   {
+    name: 'program',
+    icon: 'profile',
+    path: '/program',
+    routes : [
+      {
+        path: '/program',
+        redirect: '/program/list',
+      },
+      {
+        name: 'program-list',
+        icon: 'table',
+        path: '/program/list',
+        component: './ProgramList',
+      },
+      {
+        name: 'program-add',
+        icon: 'table',
+        path: '/program/add',
+        component: './ProgramAdd',
+      }
+    ]
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

@@ -16,6 +16,7 @@ import { FormattedMessage, useIntl } from '@umijs/max';
 import { Avatar, Button, Popover } from 'antd';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
+import PositionInfo from '@/components/PositionInfo';
 
 const handleAdd = (fields: API.WorkerListItem) => {
   console.log(fields);
@@ -125,7 +126,10 @@ const WorkerList: React.FC = () => {
               setCurrentRow(entity);
             }}
           >
-            {dom}
+            <PositionInfo
+                name={entity.position_name ?? ''}
+                type={entity.position_type ?? ''}
+            />
           </div>
         );
       },

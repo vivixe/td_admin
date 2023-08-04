@@ -50,12 +50,6 @@ export async function getInitialState(): Promise<{
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
-  console.log('initialState', initialState);
-  console.log(
-    '%c [ initialState?.userInfo?.user_pic ]-60',
-    'font-size:16px; background:#718e16; color:#b5d25a;',
-    initialState?.userInfo,
-  );
 
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
@@ -75,7 +69,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       // 如果没有登录，重定向到 login
       if (!initialState?.userInfo && location.pathname !== loginPath) {
         history.push(loginPath);
-        console.log('没有登录');
       }
     },
     layoutBgImgList: [

@@ -11,7 +11,7 @@ import {
 } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button } from 'antd';
+import { Button,Tag  } from 'antd';
 import React, { useRef, useState } from 'react';
 import PositionForm from './components/PositionForm';
 
@@ -54,9 +54,25 @@ const PositionList: React.FC = () => {
 
   const intl = useIntl();
 
+
   const columns: ProColumns<API.PositionListItem>[] = [
     {
-      title: <FormattedMessage id="pages.workerTable.workerName" defaultMessage="职员姓名" />,
+      title: <FormattedMessage id="pages.workerTable.workerId" defaultMessage="ID" />,
+      dataIndex: 'id',
+      render: (dom, entity) => {
+        return (
+          <div
+            onClick={() => {
+              setCurrentRow(entity);
+            }}
+          >
+            {dom}
+          </div>
+        );
+      },
+    },
+    {
+      title: <FormattedMessage id="pages.workerTable.workerName" defaultMessage="职位名称" />,
       dataIndex: 'name',
       tip: '规则名称是唯一的 key',
       render: (dom, entity) => {
@@ -72,31 +88,20 @@ const PositionList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.workerTable.workerPosition" defaultMessage="职位" />,
-      dataIndex: 'position_name',
+      title: <FormattedMessage id="pages.workerTable.workerPosition" defaultMessage="职位类型" />,
+      dataIndex: 'type',
       render: (dom, entity) => {
+        let color = entity.type === 'technology' ? 'green' : entity.type === 'product' ? 'blue' : 'purple';
+        let text = entity.type === 'technology' ? '技术' : entity.type === 'product' ? '产品' : '管理';
         return (
           <div
             onClick={() => {
               setCurrentRow(entity);
             }}
           >
-            {dom}
-          </div>
-        );
-      },
-    },
-    {
-      title: <FormattedMessage id="pages.workerTable.workerContact" defaultMessage="联系方式" />,
-      dataIndex: 'contact',
-      render: (dom, entity) => {
-        return (
-          <div
-            onClick={() => {
-              setCurrentRow(entity);
-            }}
-          >
-            {dom}
+            <Tag color={color} key={entity.type}>
+              {text}
+            </Tag>
           </div>
         );
       },
@@ -109,15 +114,15 @@ const PositionList: React.FC = () => {
         0: {
           text: (
             <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
+              id="pages.positionTable.nameStatus.offline"
+              defaultMessage="禁用"
             />
           ),
           status: 'Error',
         },
         1: {
           text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
+            <FormattedMessage id="pages.positionTable.nameStatus.online" defaultMessage="启用" />
           ),
           status: 'Success',
         },
