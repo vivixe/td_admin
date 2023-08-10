@@ -98,6 +98,17 @@ export default [
     ]
   },
   {
+    name: 'info',
+    icon: 'profile',
+    path: '/info',
+    routes: [
+      {
+        path: '/info',
+        redirect: '/info/list',
+      }
+    ]
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

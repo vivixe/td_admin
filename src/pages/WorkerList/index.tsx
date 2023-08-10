@@ -50,6 +50,8 @@ const WorkerList: React.FC = () => {
 
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
+  const [showDetail] = useState<boolean>(false);
+
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.WorkerListItem>();
 
@@ -325,17 +327,15 @@ const WorkerList: React.FC = () => {
               actionRef.current.reload();
             }
           }
-          console.log(value);
         }}
         onCancel={() => {
           handleUpdateModalOpen(false);
-          // if (!showDetail) {
-          //     setCurrentRow(undefined);
-          // }
+          if (!showDetail) {
+              setCurrentRow(undefined);
+          }
         }}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
-        name={currentRow?.name || ''}
       />
     </PageContainer>
   );
