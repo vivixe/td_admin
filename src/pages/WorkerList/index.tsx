@@ -12,7 +12,7 @@ import {
 // 引入antd图标
 import { MailOutlined, ManOutlined, MobileOutlined, WomanOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { FormattedMessage, useIntl } from '@umijs/max';
+import { FormattedMessage } from '@umijs/max';
 import { Avatar, Button, Popover } from 'antd';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
@@ -57,8 +57,6 @@ const WorkerList: React.FC = () => {
 
   const [selectedRowsState, setSelectedRows] = useState<API.WorkerListItem[]>([]);
 
-  const intl = useIntl();
-
   // 声明一个content变量，用于存放弹出框的内容，包括姓名、职位、联系方式
   const content = (
     <div style={{ display: 'flex' }}>
@@ -84,7 +82,7 @@ const WorkerList: React.FC = () => {
 
   const columns: ProColumns<API.WorkerListItem>[] = [
     {
-      title: <FormattedMessage id="pages.workerTable.workerName" defaultMessage="职员姓名" />,
+      title: "职员姓名",
       dataIndex: 'name',
       tip: '规则名称是唯一的 key',
       render: (dom, entity) => {
@@ -102,7 +100,7 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.workerTable.workerId" defaultMessage="职员ID" />,
+      title: "职员ID",
       dataIndex: 'id',
       hideInForm: true,
       hideInSearch: true,
@@ -119,7 +117,7 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.workerTable.workerPosition" defaultMessage="职位" />,
+      title: "职位",
       dataIndex: 'position_name',
       render: (dom, entity) => {
         return (
@@ -137,7 +135,7 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.workerTable.workerContact" defaultMessage="联系方式" />,
+      title: "联系方式",
       dataIndex: 'contact',
       render: (dom, entity) => {
         return (
@@ -147,7 +145,7 @@ const WorkerList: React.FC = () => {
             }}
           >
             <MobileOutlined style={{ marginRight: 8, fontSize: 16, color: '#08c' }} />
-            {entity.phone}
+            <span>{entity.phone}</span>
             <MailOutlined style={{ marginLeft: 8, marginRight: 8, fontSize: 16, color: '#08c' }} />
             {entity.email}
           </div>
@@ -155,44 +153,27 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="状态" />,
+      title: "状态",
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         default: {
           text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
+            "未激活"
           ),
           status: 'Default',
         },
-        1: {
+        linked: {
           text: (
             <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
           ),
-          status: 'Processing',
-        },
-        2: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
-          ),
           status: 'Success',
         },
-        3: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
-            />
-          ),
-          status: 'Error',
-        },
+        
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: "操作",
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -203,7 +184,7 @@ const WorkerList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="配置" />
+          编辑
         </a>,
         <a key="subscribeAlert" href="https://procomponents.ant.design/">
           <FormattedMessage id="pages.searchTable.subscribeAlert" defaultMessage="订阅警报" />
@@ -215,10 +196,7 @@ const WorkerList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.WorkerListItem, API.PageParams>
-        headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: '查询表格',
-        })}
+        headerTitle="查询表格"
         actionRef={actionRef}
         rowKey={(record) => record.id + ''}
         search={{
@@ -283,14 +261,12 @@ const WorkerList: React.FC = () => {
         </FooterToolbar>
       )}
       <ModalForm
-        title={intl.formatMessage({
-          id: 'pages.workerTable.createForm.newWorker',
-          defaultMessage: '新建职员',
-        })}
+        title="新建职员"
         width="400px"
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
+          console.log('%c [ value ]-294', 'font-size:16px; background:#ad94bf; color:#f1d8ff;', value)
           const success = await handleAdd(value as API.WorkerListItem);
           if (success) {
             handleModalOpen(false);
@@ -319,6 +295,7 @@ const WorkerList: React.FC = () => {
       </ModalForm>
       <WorkerForm
         onSubmit={async (value) => {
+          console.log('%c [ value ]-322', 'font-size:16px; background:#94b3a0; color:#d8f7e4;', value)
           const success = await handleUpdate(value);
           if (success) {
             handleUpdateModalOpen(false);

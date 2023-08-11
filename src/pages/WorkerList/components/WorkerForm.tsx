@@ -1,13 +1,12 @@
 import { FormattedMessage, useIntl } from '@umijs/max';
 import {
-    ProForm,
+    ModalForm,
     ProFormText,
     // ProFormSelect,
     // ProFormRadio,
     // ProFormDatePicker,
     // ProFormDateTimePicker,
 } from '@ant-design/pro-components';
-import { Modal } from 'antd';
 import React from 'react';
 // 定义
 export type WorkerUpdateFormValueType = {
@@ -25,86 +24,78 @@ export type WorkerFormProps = {
 const WorkerForm: React.FC<WorkerFormProps> = (props) => {
     const intl = useIntl();
 
-    const waitTime = (time = 100) => {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(true);
-            }, time);
-        });
-    };
+    // const waitTime = (time = 100) => {
+    //     return new Promise((resolve) => {
+    //         setTimeout(() => {
+    //             resolve(true);
+    //         }, time);
+    //     });
+    // };
 
     return (
-        <Modal
+        <ModalForm
+            // 宽度
             width={640}
-            bodyStyle={{ padding: '32px 40px 48px' }}
-            destroyOnClose
+            // 标题
             title={intl.formatMessage({
                 id: 'pages.searchTable.updateForm.ruleConfig111',
                 defaultMessage: '规则配置111',
             })}
+            //是否打开
             open={props.updateModalOpen}
-            onCancel={() => {
-                props.onCancel();
+            // 接收一个函数，可以在 Modal 显示时进行一些操作
+            modalProps={{
+                onCancel: () => {
+                    console.log('%c [ 222 ]: ', 'color: #bf2c9f; background: pink; font-size: 13px;', '222')
+                    props.onCancel();
+                },
+                destroyOnClose: true,
+            }}
+            onFinish={props.onSubmit}
+            initialValues={{
+                id: props.values.id,
+                name: props.values.name,
+                phone: props.values.phone,
             }}
         >
-            <ProForm
-                initialValues={{
-                    // 这边应该是编辑时候获取的数据
-                    id: props.values.id,
-                    name: props.values.name,
-                    phone: props.values.phone,
-
-                }}
-                onFinish={async (values) => {
-                    await waitTime(2000);
-                    console.log(values);
-                    props.onSubmit(values as WorkerUpdateFormValueType);
-                }}
-
-            >
-
-                <ProFormText
-                    name="id"
-                    label="id"
-                    hidden={true}
-                />
-                <ProFormText
-                    name="name"
-                    label="姓名"
-                    width="md"
-                    rules={[
-                        {
-                            required: true,
-                            message: (
-                                <FormattedMessage
-                                    id="pages.searchTable.ruleName"
-                                    defaultMessage="姓名为必填项"
-                                />
-                            ),
-                        },
-                    ]}
-                />
-                <ProFormText
-                    name="phone"
-                    label="电话"
-                    width="md"
-                    rules={[
-                        {
-                            required: true,
-                            message: (
-                                <FormattedMessage
-                                    id="pages.searchTable.ruleName"
-                                    defaultMessage="电话为必填项"
-                                />
-                            ),
-                        },
-                    ]}
-                />
-            </ProForm>
-        </Modal>
-
-
-
+            <ProFormText
+                name="id"
+                label="id"
+                hidden={true}
+            />
+            <ProFormText
+                name="name"
+                label="姓名"
+                width="md"
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            <FormattedMessage
+                                id="pages.searchTable.ruleName"
+                                defaultMessage="姓名为必填项"
+                            />
+                        ),
+                    },
+                ]}
+            />
+            <ProFormText
+                name="phone"
+                label="电话"
+                width="md"
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            <FormattedMessage
+                                id="pages.searchTable.ruleName"
+                                defaultMessage="电话为必填项"
+                            />
+                        ),
+                    },
+                ]}
+            />
+        </ModalForm>
     )
 };
 
