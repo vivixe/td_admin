@@ -3,7 +3,7 @@ import {
     ModalForm,
     ProFormText,
     // ProFormSelect,
-    // ProFormRadio,
+    ProFormRadio,
     // ProFormDatePicker,
     // ProFormDateTimePicker,
 } from '@ant-design/pro-components';
@@ -23,14 +23,6 @@ export type WorkerFormProps = {
 
 const WorkerForm: React.FC<WorkerFormProps> = (props) => {
     const intl = useIntl();
-
-    // const waitTime = (time = 100) => {
-    //     return new Promise((resolve) => {
-    //         setTimeout(() => {
-    //             resolve(true);
-    //         }, time);
-    //     });
-    // };
 
     return (
         <ModalForm
@@ -56,6 +48,10 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                 id: props.values.id,
                 name: props.values.name,
                 phone: props.values.phone,
+                email: props.values.email,
+                age: props.values.age,
+                sex: props.values.sex,
+                address: props.values.address,
             }}
         >
             <ProFormText
@@ -90,6 +86,81 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                             <FormattedMessage
                                 id="pages.searchTable.ruleName"
                                 defaultMessage="电话为必填项"
+                            />
+                        ),
+                    },
+                ]}
+            />
+            {/* 邮箱 */}
+            <ProFormText
+                name="email"
+                label="邮箱"
+                width="md"
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            <FormattedMessage
+                                id="pages.searchTable.ruleName"
+                                defaultMessage="邮箱为必填项"
+                            />
+                        ),
+                    },
+                ]}
+            />
+            <ProFormRadio.Group
+                name="sex"
+                label="性别"
+                width="md"
+                options={[
+                    {
+                        label: '男',
+                        value: 'male',
+                    },
+                    {
+                        label: '女',
+                        value: 'female',
+                    },
+                ]}
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            <FormattedMessage
+                                id="pages.searchTable.ruleName"
+                                defaultMessage="性别为必填项"
+                            />
+                        ),
+                    },
+                ]}
+            />
+            <ProFormText
+                name="age"
+                label="年龄"
+                width="md"
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            <FormattedMessage
+                                id="pages.searchTable.ruleName"
+                                defaultMessage="年龄为必填项"
+                            />
+                        ),
+                    },
+                ]}
+            />
+            <ProFormText
+                name="address"
+                label="地址"
+                width="md"
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            <FormattedMessage
+                                id="pages.searchTable.ruleName"
+                                defaultMessage="地址为必填项"
                             />
                         ),
                     },
