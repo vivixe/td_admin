@@ -33,8 +33,8 @@ declare namespace API {
   };
 
   type PageParams = {
-    current?: number;
-    pageSize?: number;
+    page_no?: number;
+    page_size?: number;
   };
 
   type RuleListItem = {
@@ -140,6 +140,7 @@ declare namespace API {
     sex?: string;
     position_name?: string;
     position_type?: string;
+    position_id?: string;
   };
 
   type WorkerList = {
@@ -148,6 +149,11 @@ declare namespace API {
     total?: number;
     success?: boolean;
   };
+
+  type WorkerUpdate = {
+    status?: number;
+    message?: string;
+  }
 
   type PositionListParams = {
     name?: string;

@@ -1,4 +1,4 @@
-import { getWorkerList } from '@/services/admin/worker';
+import { getWorkerList,updateWorkerInfo } from '@/services/admin/worker';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   FooterToolbar,
@@ -12,18 +12,12 @@ import {
 // 引入antd图标
 import { MailOutlined, ManOutlined, MobileOutlined, WomanOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { FormattedMessage } from '@umijs/max';
-import { Avatar, Button, Popover } from 'antd';
+import { Avatar, Button, Popover,message } from 'antd';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
 import PositionInfo from '@/components/PositionInfo';
 
 const handleAdd = (fields: API.WorkerListItem) => {
-  console.log(fields);
-  return true;
-};
-
-const handleUpdate = (fields: API.WorkerListItem) => {
   console.log(fields);
   return true;
 };
@@ -56,6 +50,15 @@ const WorkerList: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.WorkerListItem>();
 
   const [selectedRowsState, setSelectedRows] = useState<API.WorkerListItem[]>([]);
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: '更新成功！',
+    });
+  };
 
   // 声明一个content变量，用于存放弹出框的内容，包括姓名、职位、联系方式
   const content = (
@@ -165,7 +168,7 @@ const WorkerList: React.FC = () => {
         },
         linked: {
           text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
+            "已激活"
           ),
           status: 'Success',
         },
@@ -185,10 +188,7 @@ const WorkerList: React.FC = () => {
           }}
         >
           编辑
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage id="pages.searchTable.subscribeAlert" defaultMessage="订阅警报" />
-        </a>,
+        </a>
       ],
     },
   ];
@@ -210,7 +210,7 @@ const WorkerList: React.FC = () => {
               handleModalOpen(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined /> 新建职员
           </Button>,
         ]}
         request={getWorkerList}
@@ -225,17 +225,14 @@ const WorkerList: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              已选择{' '}
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
+              项
               &nbsp;&nbsp;
               <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
+                {/* 总共滴{' '} */}
+                {/* {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '} */}
+                {/* 万 */}
               </span>
             </div>
           }
@@ -247,16 +244,10 @@ const WorkerList: React.FC = () => {
               actionRef.current?.reloadAndRest?.();
             }}
           >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
+            撤硕1
           </Button>
           <Button type="primary">
-            <FormattedMessage
-              id="pages.searchTable.batchApproval"
-              defaultMessage="Batch approval"
-            />
+            撤硕2
           </Button>
         </FooterToolbar>
       )}
@@ -281,10 +272,7 @@ const WorkerList: React.FC = () => {
             {
               required: true,
               message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
-                />
+                "姓名为必填项"
               ),
             },
           ]}
@@ -293,11 +281,16 @@ const WorkerList: React.FC = () => {
         />
         <ProFormTextArea width="md" name="desc" />
       </ModalForm>
+      {contextHolder}
       <WorkerForm
         onSubmit={async (value) => {
           console.log('%c [ value ]-322', 'font-size:16px; background:#94b3a0; color:#d8f7e4;', value)
-          const success = await handleUpdate(value);
-          if (success) {
+          const res = await updateWorkerInfo(value);
+          console.log('%c [ success ]-285', 'font-size:16px; background:#eec713; color:#ffff57;', res)
+          if (res.status === 0) {
+            // 提示更新成功
+            
+            success();
             handleUpdateModalOpen(false);
             setCurrentRow(undefined);
             if (actionRef.current) {

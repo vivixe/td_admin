@@ -99,8 +99,6 @@ export const errorConfig: RequestConfig = {
             ...config.headers,
             Authorization: token ,
           };
-          console.log('%c [ config.headers ]-99', 'font-size:16px; background:#1fbfa7; color:#63ffeb;', config.headers)
-
         }
       }
       return { ...config, url };

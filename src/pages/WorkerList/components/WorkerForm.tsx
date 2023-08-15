@@ -1,12 +1,15 @@
-import { FormattedMessage, useIntl } from '@umijs/max';
+// import { FormattedMessage, useIntl } from '@umijs/max';
 import {
     ModalForm,
     ProFormText,
-    // ProFormSelect,
+    ProFormSelect,
     ProFormRadio,
-    // ProFormDatePicker,
+    ProFormDatePicker,
+    // RequestOptionsType,
     // ProFormDateTimePicker,
 } from '@ant-design/pro-components';
+import { getPositionList } from '@/services/admin/position';
+// import { getWorkerDetail } from '@/services/admin/worker';
 import React from 'react';
 // 定义
 export type WorkerUpdateFormValueType = {
@@ -22,17 +25,13 @@ export type WorkerFormProps = {
 
 
 const WorkerForm: React.FC<WorkerFormProps> = (props) => {
-    const intl = useIntl();
 
     return (
         <ModalForm
             // 宽度
             width={640}
             // 标题
-            title={intl.formatMessage({
-                id: 'pages.searchTable.updateForm.ruleConfig111',
-                defaultMessage: '规则配置111',
-            })}
+            title='规则配置111'
             //是否打开
             open={props.updateModalOpen}
             // 接收一个函数，可以在 Modal 显示时进行一些操作
@@ -44,15 +43,7 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                 destroyOnClose: true,
             }}
             onFinish={props.onSubmit}
-            initialValues={{
-                id: props.values.id,
-                name: props.values.name,
-                phone: props.values.phone,
-                email: props.values.email,
-                age: props.values.age,
-                sex: props.values.sex,
-                address: props.values.address,
-            }}
+            initialValues={props.values}
         >
             <ProFormText
                 name="id"
@@ -67,10 +58,7 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                     {
                         required: true,
                         message: (
-                            <FormattedMessage
-                                id="pages.searchTable.ruleName"
-                                defaultMessage="姓名为必填项"
-                            />
+                            "姓名为必填项"
                         ),
                     },
                 ]}
@@ -83,10 +71,7 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                     {
                         required: true,
                         message: (
-                            <FormattedMessage
-                                id="pages.searchTable.ruleName"
-                                defaultMessage="电话为必填项"
-                            />
+                            "电话为必填项"
                         ),
                     },
                 ]}
@@ -100,10 +85,7 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                     {
                         required: true,
                         message: (
-                            <FormattedMessage
-                                id="pages.searchTable.ruleName"
-                                defaultMessage="邮箱为必填项"
-                            />
+                            "邮箱为必填项"
                         ),
                     },
                 ]}
@@ -126,10 +108,7 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                     {
                         required: true,
                         message: (
-                            <FormattedMessage
-                                id="pages.searchTable.ruleName"
-                                defaultMessage="性别为必填项"
-                            />
+                            "性别为必填项"
                         ),
                     },
                 ]}
@@ -142,10 +121,48 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                     {
                         required: true,
                         message: (
-                            <FormattedMessage
-                                id="pages.searchTable.ruleName"
-                                defaultMessage="年龄为必填项"
-                            />
+                            "年龄为必填项"
+                        ),
+                    },
+                ]}
+            />
+            <ProFormDatePicker
+                name="date"
+                label="入职日期"
+                width="md"
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            "入职日期为必填项"
+                        ),
+                    },
+                ]}
+            />
+            <ProFormSelect
+                name="position_id"
+                label="职位"
+                width="md"
+                fieldProps={{
+                    onChange: async (value) => {
+                        console.log('%c [ value ]-93', 'font-size:16px; background:#93b3bf; color:#f1d8ff;', value)
+                    },
+                }}
+                request={async () => {
+                    const data = await getPositionList({ current: 1, pageSize: 1000 }, {});
+                    console.log('%c [ data ]-98', 'font-size:16px; background:#93b3bf; color:#f1d8ff;', data)
+                    // 取出data.data中的id和name
+                    const positionList = data.data ? data.data.map((item) => {
+                        return { label: item.name, value: item.id }
+                    }
+                    ): [];
+                    return positionList;
+                }}
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            "职位为必填项"
                         ),
                     },
                 ]}
@@ -158,10 +175,7 @@ const WorkerForm: React.FC<WorkerFormProps> = (props) => {
                     {
                         required: true,
                         message: (
-                            <FormattedMessage
-                                id="pages.searchTable.ruleName"
-                                defaultMessage="地址为必填项"
-                            />
+                            "地址为必填项"
                         ),
                     },
                 ]}
