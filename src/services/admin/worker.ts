@@ -18,27 +18,9 @@ export async function getWorkerList(body: {
     });
 }
 
-// // 获取职员信息 POST /api/my/worker/detail
-// export async function getWorkerDetail(params: {
-//     // query
-//     /** 职员id */
-//     id?: string;
-// }, options?: { [key: string]: any }) {
-//     return request<API.WorkerDetail>("/api/my/worker/detail", {
-//         method: "POST",
-//         headers: {
-//         "Content-Type": "application/json",
-//         },
-//         body: {
-//             ...params,
-//         },
-//         ...(options || {}),
-//     });
-// }
-
 // 更新职员信息 POST /api/my/worker/saveinfo
 export async function updateWorkerInfo(body: API.WorkerListItem, options?: { [key: string]: any }) {
-    return request<API.WorkerUpdate>("/api/my/worker/saveinfo", {
+    return request<API.FormUpdate>("/api/my/worker/saveinfo", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",

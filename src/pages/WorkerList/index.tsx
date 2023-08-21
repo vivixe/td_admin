@@ -2,11 +2,7 @@ import { getWorkerList,updateWorkerInfo } from '@/services/admin/worker';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   FooterToolbar,
-  ModalForm,
   PageContainer,
-  // ProDescriptions,
-  ProFormText,
-  ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
 // 引入antd图标
@@ -16,11 +12,6 @@ import { Avatar, Button, Popover,message } from 'antd';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
 import PositionInfo from '@/components/PositionInfo';
-
-const handleAdd = (fields: API.WorkerListItem) => {
-  console.log(fields);
-  return true;
-};
 
 const handleRemove = async (selectedRows: API.WorkerListItem[]) => {
   // const hide = message.loading('正在删除');
@@ -40,7 +31,6 @@ const handleRemove = async (selectedRows: API.WorkerListItem[]) => {
 };
 
 const WorkerList: React.FC = () => {
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
 
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
@@ -196,7 +186,7 @@ const WorkerList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.WorkerListItem, API.PageParams>
-        headerTitle="查询表格"
+        headerTitle="职员列表"
         actionRef={actionRef}
         rowKey={(record) => record.id + ''}
         search={{
@@ -207,11 +197,11 @@ const WorkerList: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleModalOpen(true);
+              handleUpdateModalOpen(true);
             }}
           >
             <PlusOutlined /> 新建职员
-          </Button>,
+          </Button>
         ]}
         request={getWorkerList}
         columns={columns}
@@ -251,36 +241,6 @@ const WorkerList: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-      <ModalForm
-        title="新建职员"
-        width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          console.log('%c [ value ]-294', 'font-size:16px; background:#ad94bf; color:#f1d8ff;', value)
-          const success = await handleAdd(value as API.WorkerListItem);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: (
-                "姓名为必填项"
-              ),
-            },
-          ]}
-          width="md"
-          name="name"
-        />
-        <ProFormTextArea width="md" name="desc" />
-      </ModalForm>
       {contextHolder}
       <WorkerForm
         onSubmit={async (value) => {

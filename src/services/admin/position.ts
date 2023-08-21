@@ -1,15 +1,14 @@
 import { request } from '@umijs/max';
 
-// 获取职员列表 POST /api/my/worker/list
+// 获取职位列表 POST /api/my/position/getPositionList
 export async function getPositionList(
-  params: {
+  body: {
     // query
     /** 当前的页码 */
     current?: number;
     /** 页面的容量 */
     pageSize?: number;
   },
-  body: API.PositionListParams,
   options?: { [key: string]: any },
 ) {
   return request<API.PositionList>('/api/my/position/getPositionList', {
@@ -17,8 +16,20 @@ export async function getPositionList(
     headers: {
       'Content-Type': 'application/json',
     },
-    params: {
-      ...params,
+    data: body,
+    ...(options || {}),
+  });
+}
+
+// 更新职位信息 POST /api/my/position/savePosition
+export async function updatePositionInfo(
+  body: API.PositionListItem,
+  options?: { [key: string]: any },
+) {
+  return request<API.FormUpdate>('/api/my/position/savePosition', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),

@@ -150,7 +150,7 @@ declare namespace API {
     success?: boolean;
   };
 
-  type WorkerUpdate = {
+  type FormUpdate = {
     status?: number;
     message?: string;
   }
@@ -170,5 +170,34 @@ declare namespace API {
     data?: PositionListItem[];
     /** 列表的内容总数 */
     total?: number;
+  };
+
+  type ProgramList = {
+    data?: ProgramListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+  };
+
+  type ProgramListItem = {
+    key_id?: number;
+    name?: string;
+    owner?: string;
+    time?: string;
+    member?: string;
+    earn?: string;
+    propic?: string;
+    status?: string;
+    demand?: string;
+    program_id?: string;
+    team_id?: string;
+    nickname?: string;
+    username?: string;
+    user_pic?: string;
+    team_name?: string;
+    team_pic?: string;
+    team_intro?: string;
+    demand_count?: number;
+    mission_count?: number;
+    bug_count?: number;
   };
 }

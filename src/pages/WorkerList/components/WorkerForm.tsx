@@ -1,4 +1,3 @@
-// import { FormattedMessage, useIntl } from '@umijs/max';
 import {
     ModalForm,
     ProFormText,
@@ -9,7 +8,6 @@ import {
     // ProFormDateTimePicker,
 } from '@ant-design/pro-components';
 import { getPositionList } from '@/services/admin/position';
-// import { getWorkerDetail } from '@/services/admin/worker';
 import React from 'react';
 // 定义
 export type WorkerUpdateFormValueType = {

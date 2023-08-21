@@ -1,29 +1,16 @@
-import { getPositionList } from '@/services/admin/position';
+import { getPositionList,updatePositionInfo } from '@/services/admin/position';
 import { PlusOutlined } from '@ant-design/icons';
 import {
   FooterToolbar,
-  ModalForm,
   PageContainer,
   // ProDescriptions,
-  ProFormText,
-  ProFormTextArea,
   ProTable,
 } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button,Tag  } from 'antd';
+// import { FormattedMessage, useIntl } from '@umijs/max';
+import { Button,Tag,message  } from 'antd';
 import React, { useRef, useState } from 'react';
 import PositionForm from './components/PositionForm';
-
-const handleAdd = (fields: API.PositionListItem) => {
-  console.log(fields);
-  return true;
-};
-
-const handleUpdate = (fields: API.PositionListItem) => {
-  console.log(fields);
-  return true;
-};
 
 const handleRemove = async (selectedRows: API.PositionListItem[]) => {
   // const hide = message.loading('正在删除');
@@ -43,21 +30,28 @@ const handleRemove = async (selectedRows: API.PositionListItem[]) => {
 };
 
 const PositionList: React.FC = () => {
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
 
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+
+  const [showDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.PositionListItem>();
 
   const [selectedRowsState, setSelectedRows] = useState<API.PositionListItem[]>([]);
 
-  const intl = useIntl();
+  const [messageApi, contextHolder] = message.useMessage();
 
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: '更新成功！',
+    });
+  };
 
   const columns: ProColumns<API.PositionListItem>[] = [
     {
-      title: <FormattedMessage id="pages.workerTable.workerId" defaultMessage="ID" />,
+      title: "职位ID",
       dataIndex: 'id',
       render: (dom, entity) => {
         return (
@@ -72,9 +66,9 @@ const PositionList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.workerTable.workerName" defaultMessage="职位名称" />,
+      title: "职位名称",
       dataIndex: 'name',
-      tip: '规则名称是唯一的 key',
+      tip: '职位名称是唯一的 key',
       render: (dom, entity) => {
         return (
           <a
@@ -88,7 +82,7 @@ const PositionList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.workerTable.workerPosition" defaultMessage="职位类型" />,
+      title: "职位类型",
       dataIndex: 'type',
       render: (dom, entity) => {
         let color = entity.type === 'technology' ? 'green' : entity.type === 'product' ? 'blue' : 'purple';
@@ -107,29 +101,22 @@ const PositionList: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="状态" />,
+      title: "状态",
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         0: {
-          text: (
-            <FormattedMessage
-              id="pages.positionTable.nameStatus.offline"
-              defaultMessage="禁用"
-            />
-          ),
+          text: "禁用",
           status: 'Error',
         },
         1: {
-          text: (
-            <FormattedMessage id="pages.positionTable.nameStatus.online" defaultMessage="启用" />
-          ),
+          text: "启用",
           status: 'Success',
         },
       },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
+      title: "操作",
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -140,11 +127,11 @@ const PositionList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="配置" />
+          编辑
         </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage id="pages.searchTable.subscribeAlert" defaultMessage="订阅警报" />
-        </a>,
+        // <a key="subscribeAlert" href="https://procomponents.ant.design/">
+        //   111
+        // </a>,
       ],
     },
   ];
@@ -152,10 +139,7 @@ const PositionList: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.PositionListItem, API.PageParams>
-        headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: '查询表格',
-        })}
+        headerTitle="职位列表"
         actionRef={actionRef}
         rowKey="key"
         search={{
@@ -166,10 +150,10 @@ const PositionList: React.FC = () => {
             type="primary"
             key="primary"
             onClick={() => {
-              handleModalOpen(true);
+              handleUpdateModalOpen(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined /> 新建职位
           </Button>,
         ]}
         request={getPositionList}
@@ -184,17 +168,14 @@ const PositionList: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              已选择{' '}
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
+              项
               &nbsp;&nbsp;
               <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
+                {/* 总共滴{' '} */}
+                {/* {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '} */}
+                {/* 万 */}
               </span>
             </div>
           }
@@ -205,59 +186,25 @@ const PositionList: React.FC = () => {
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
+            // disabled={selectedRowsState.length === 0}
+            disabled={true}
           >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
+            批量禁用
           </Button>
-          <Button type="primary">
-            <FormattedMessage
-              id="pages.searchTable.batchApproval"
-              defaultMessage="Batch approval"
-            />
+          <Button 
+            type="primary"
+            disabled={true}
+          >
+            批量启用
           </Button>
         </FooterToolbar>
       )}
-      <ModalForm
-        title={intl.formatMessage({
-          id: 'pages.workerTable.createForm.newRule',
-          defaultMessage: '新建职员',
-        })}
-        width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.PositionListItem);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
-                />
-              ),
-            },
-          ]}
-          width="md"
-          name="name"
-        />
-        <ProFormTextArea width="md" name="desc" />
-      </ModalForm>
+      {contextHolder}
       <PositionForm
         onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
+          const res = await updatePositionInfo(value);
+          if (res.status === 0) {
+            success();
             handleUpdateModalOpen(false);
             setCurrentRow(undefined);
             if (actionRef.current) {
@@ -268,13 +215,12 @@ const PositionList: React.FC = () => {
         }}
         onCancel={() => {
           handleUpdateModalOpen(false);
-          // if (!showDetail) {
-          //     setCurrentRow(undefined);
-          // }
+          if (!showDetail) {
+              setCurrentRow(undefined);
+          }
         }}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
-        name={currentRow?.name || ''}
       />
     </PageContainer>
   );
