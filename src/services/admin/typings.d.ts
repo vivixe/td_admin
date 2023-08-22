@@ -200,4 +200,28 @@ declare namespace API {
     mission_count?: number;
     bug_count?: number;
   };
+
+  type InfoList = {
+    data?: InfoListItem[];
+    /** 列表的内容总数 */
+    total?: number;
+  };
+
+  type InfoListItem = {
+    id?: string;
+    title?: string;
+    intro?: string;
+    content?: string;
+    description?: string;
+    adminid?: string;
+    targetid?: string;
+    targetname?: string;
+    datetime?: string;
+    star?: number;
+    like?: number;
+    comment?: number;
+    nickname?: string;
+    username?: string;
+    user_pic?: string;
+  };
 }

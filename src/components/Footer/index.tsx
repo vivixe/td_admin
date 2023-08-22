@@ -1,14 +1,9 @@
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-components';
-import { useIntl } from '@umijs/max';
 import React from 'react';
 
 const Footer: React.FC = () => {
-  const intl = useIntl();
-  const defaultMessage = intl.formatMessage({
-    id: 'app.copyright.produced',
-    defaultMessage: '蚂蚁集团体验技术部出品',
-  });
+  const defaultMessage = "轻智云台服务出品"
 
   const currentYear = new Date().getFullYear();
 
@@ -20,21 +15,21 @@ const Footer: React.FC = () => {
       copyright={`${currentYear} ${defaultMessage}`}
       links={[
         {
-          key: 'Ant Design Pro',
-          title: 'Ant Design Pro',
-          href: 'https://pro.ant.design',
+          key: 'Vivixe',
+          title: 'Vivixe',
+          href: 'https://vivixe.github.io/index.html#about',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/ant-design/ant-design-pro',
+          href: 'https://github.com/vivixe/td_admin',
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
-          title: 'Ant Design',
-          href: 'https://ant.design',
+          key: 'QingZhiYunTai',
+          title: 'QingZhiYunTai',
+          href: 'https://www.qingzhiyun.com/',
           blankTarget: true,
         },
       ]}

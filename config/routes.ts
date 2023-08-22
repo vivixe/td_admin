@@ -26,7 +26,7 @@ export default [
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
-    component: './Welcome',
+    component: './Home',
   },
   {
     path: '/admin',
@@ -45,12 +45,12 @@ export default [
       },
     ],
   },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
+  // {
+  //   name: 'list.table-list',
+  //   icon: 'table',
+  //   path: '/list',
+  //   component: './TableList',
+  // },
   {
     name: 'worker',
     icon: 'user',
@@ -99,12 +99,18 @@ export default [
   },
   {
     name: 'info',
-    icon: 'profile',
+    icon: 'mail',
     path: '/info',
     routes: [
       {
         path: '/info',
         redirect: '/info/list',
+      },
+      {
+        name: 'info-list',
+        icon: 'table',
+        path: '/info/list',
+        component: './InfoList',
       }
     ]
   },

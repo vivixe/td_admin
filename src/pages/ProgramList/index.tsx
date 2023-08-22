@@ -1,5 +1,5 @@
 import { getProgramList } from '@/services/admin/program';
-// import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   // FooterToolbar,
   PageContainer,
@@ -25,13 +25,13 @@ const ProgramList: React.FC = () => {
           key: 'base',
         },
       ]}
-      extra={[
-        <Button key="3">操作</Button>,
-        <Button key="2">操作</Button>,
-        <Button key="1" type="primary">
-          主操作
-        </Button>,
-      ]}
+      // extra={[
+      //   <Button key="3">操作</Button>,
+      //   <Button key="2">操作</Button>,
+      //   <Button key="1" type="primary">
+      //     主操作
+      //   </Button>,
+      // ]}
     // footer={[
     //   <Button key="rest">重置</Button>,
     //   <Button key="submit" type="primary">
@@ -41,10 +41,9 @@ const ProgramList: React.FC = () => {
     >
       <ProList<any>
         toolBarRender={() => [
-          <Button key="3">操作</Button>,
-          <Button key="2">操作</Button>,
+          <Button key="2">更新</Button>,
           <Button key="1" type="primary">
-            主操作
+              <PlusOutlined />新增
           </Button>,
         ]}
         pagination={{
