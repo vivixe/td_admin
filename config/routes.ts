@@ -110,7 +110,7 @@ export default [
         name: 'info-list',
         icon: 'table',
         path: '/info/list',
-        component: './InfoList',
+        component: './NoticeList',
       }
     ]
   },

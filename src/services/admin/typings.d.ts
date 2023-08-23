@@ -71,7 +71,7 @@ declare namespace API {
     type?: string;
   };
 
-  type UserInfoParams = {
+  type UserNoticeParams = {
     id?: number;
     token?: string;
   };
@@ -107,7 +107,7 @@ declare namespace API {
     type?: NoticeIconItemType;
   };
 
-  type UserInfo = {
+  type UserNotice = {
     id?: number;
     username?: string;
     nickname?: string;
@@ -201,13 +201,13 @@ declare namespace API {
     bug_count?: number;
   };
 
-  type InfoList = {
-    data?: InfoListItem[];
+  type NoticeList = {
+    data?: NoticeListItem[];
     /** 列表的内容总数 */
     total?: number;
   };
 
-  type InfoListItem = {
+  type NoticeListItem = {
     id?: string;
     title?: string;
     intro?: string;

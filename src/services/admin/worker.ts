@@ -7,11 +7,11 @@ export async function getWorkerList(body: {
     page_no?: number;
     /** 页面的容量 */
     page_size?: number;
-  }, options?: { [key: string]: any }) {
+}, options?: { [key: string]: any }) {
     return request<API.WorkerList>("/api/my/worker/list", {
         method: "POST",
         headers: {
-        "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         data: body,
         ...(options || {}),
@@ -23,7 +23,7 @@ export async function updateWorkerInfo(body: API.WorkerListItem, options?: { [ke
     return request<API.FormUpdate>("/api/my/worker/saveinfo", {
         method: "POST",
         headers: {
-        "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         data: body,
         ...(options || {}),
