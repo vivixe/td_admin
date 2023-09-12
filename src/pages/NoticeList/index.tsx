@@ -29,7 +29,7 @@ const NoticeList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProList<{ title: string }>
+      <ProList<any>
       toolBarRender={() => {
         return [
           <Button key="3" type="primary">
@@ -56,9 +56,8 @@ const NoticeList: React.FC = () => {
           },
         }
       }
-      request={
-        async (params = {}, sort, filter) => {
-          console.log(params, sort, filter);
+      request ={
+        async (params = {}) => {
           const res = await getNoticeList(
             {
               current: params.current,

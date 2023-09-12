@@ -30,6 +30,7 @@ export default {
   'menu.worker.worker-add': '添加职员',
   'menu.worker.worker-edit': '编辑职员',
   'menu.info': '信息管理',
+  'menu.info.info-list': '通知管理',
   'menu.program': '项目管理',
   'menu.program.program-list': '项目列表',
   'menu.program.program-add': '添加项目',

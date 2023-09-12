@@ -94,6 +94,7 @@ export default [
         icon: 'table',
         path: '/program/add',
         component: './ProgramAdd',
+        hideInMenu:true
       }
     ]
   },
