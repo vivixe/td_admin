@@ -13,7 +13,7 @@ import { Button, Image, Avatar,Divider } from 'antd';
 // import React, { useState } from 'react';
 import ProgramStatus from '@/components/ProgramStatus';
 import './index.less';
-
+import { history } from '@umijs/max';
 
 const ProgramList: React.FC = () => {
 
@@ -42,7 +42,12 @@ const ProgramList: React.FC = () => {
       <ProList<any>
         toolBarRender={() => [
           <Button key="2">更新</Button>,
-          <Button key="1" type="primary">
+          <Button key="1" type="primary" onClick={()=> {
+            history.push({
+              pathname: '/program/add',
+              search: 'id= '
+            })
+          }}>
               <PlusOutlined />新增
           </Button>,
         ]}
@@ -66,7 +71,16 @@ const ProgramList: React.FC = () => {
                   title: (<span style={{fontSize:16,fontWeight:600}}>{item.name}</span>),
                   subTitle: (<span style={{ fontSize:12,fontWeight:300,color:'#666',width: 80, textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{item.demand}</span>),
                   // avatar: item.team_pic ? item.team_pic : 'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png',
-                  actions: [<a key="work">工作</a>,<a key="data">分析</a> , <a key="edit">编辑</a>],
+                  actions: [
+                    <a key="work">工作</a>,
+                    <a key="data">分析</a>,
+                    <a key="edit" onClick={()=> {
+                      history.push({
+                        pathname: '/program/add',
+                        search: 'id='+item.program_id
+                      })
+                    }}>编辑</a>
+                  ],
                   content: (
                     <div style={{width:"100%"}}>
                       <div style={{ display: 'flex', width: '100%' }}>

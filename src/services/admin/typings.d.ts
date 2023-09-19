@@ -201,6 +201,46 @@ declare namespace API {
     bug_count?: number;
   };
 
+  type ProgramInfo = {
+    data?: Object,
+    status?: number
+  }
+
+  type ProgramInfoItem = {
+    key_id?: number;
+    name?: string;
+    owner?: string;
+    time?: string;
+    member?: string;
+    earn?: string;
+    propic?: string;
+    status?: string;
+    demand?: string;
+    program_id?: string;
+    team_id?: string;
+    nickname?: string;
+    username?: string;
+    user_pic?: string;
+    team_name?: string;
+    team_pic?: string;
+    team_intro?: string;
+    demand_count?: number;
+    mission_count?: number;
+    bug_count?: number;
+  }
+
+  type UserList = {
+    data?: UserItem[],
+    total?: number
+  }
+
+  type UserItem = {
+    id?: number,
+    nickname?: string,
+    user_pic?: string,
+    username?: string
+  }
+
   type NoticeList = {
     data?: NoticeListItem[];
     /** 列表的内容总数 */

@@ -20,3 +20,31 @@ export async function getProgramList(
         ...(options || {}),
     });
 }
+
+export async function getProgramInfo(
+     body: {
+        id?: string;
+     },
+     options?: { [key: string]: any },
+) {
+    return request<API.ProgramInfo>('/api/my/program/proinfo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: body,
+        ...(options || {}),
+    })
+}
+
+export async function getUserSelect(
+    options?: { [key: string]: any },
+) {
+    return request<API.UserList>('/api/my/program/getUserSelect', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        ...(options || {}),
+    })
+}
