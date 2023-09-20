@@ -264,4 +264,16 @@ declare namespace API {
     username?: string;
     user_pic?: string;
   };
+
+  type TeamList = {
+    data?: TeamItem[];
+    total?: number;
+  }
+
+  type TeamItem = {
+    id?: string;
+    intro?: string;
+    name?: string;
+    team_pic?: string;
+  }
 }

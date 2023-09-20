@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ProForm, {
-    ProFormRadio,
     ProFormText,
     ProFormDatePicker,
     ProFormSelect
@@ -8,10 +7,13 @@ import ProForm, {
 import { PageContainer } from '@ant-design/pro-components'
 import {
     Skeleton,
-    Avatar
+    Avatar,
+    Button,
 } from 'antd';
+import {UsergroupAddOutlined} from '@ant-design/icons'
 import { isEmpty } from 'lodash';
 import { getProgramInfo,getUserSelect } from '@/services/admin/program'
+import { getTeamList } from '@/services/admin/team';
 import { useLocation } from '@umijs/max'
 
 const ProgramAdd = () => {
@@ -25,16 +27,13 @@ const ProgramAdd = () => {
     let search = location.search
     let searchParams = new URLSearchParams(search)
     const program_id = searchParams.get("id") || undefined
-    console.log('%c [ program_id ]-25', 'font-size:16px; background:#c9f369; color:#ffffad;', program_id)
 
     // 获取详情
     useEffect(() => {
         if(program_id === undefined) return
         getProgramInfo({id:program_id}).then(res => {
-            console.log('%c [ data ]-36', 'font-size:16px; background:#bd3f3c; color:#ff8380;', res)
             if(res.status === 0){    
                 setDetail(res.data || {});
-                console.log('%c [ {data: res} ]-34', 'font-size:16px; background:#d4853d; color:#ffc981;', {data: res})
             }
         })
     }, []);
@@ -43,12 +42,6 @@ const ProgramAdd = () => {
 
     // 数据获取到之前展示加载动画，让 form 渲染时肯定可以得到初始值
     return <PageContainer
-    // tabList={[
-    //   {
-    //     tab: '基本信息',
-    //     key: 'base',
-    //   },
-    // ]}
     >
     {loadingPage ? (
         <Skeleton active />
@@ -58,6 +51,7 @@ const ProgramAdd = () => {
             <ProFormText
                 name="name"
                 label="名称"
+                width="md"
                 placeholder="请输入名称"
                 rules={[{ required: true, message: '名称不能为空' }]}
             />
@@ -83,7 +77,7 @@ const ProgramAdd = () => {
                                     {item.nickname}
                                 </div>
                             ), 
-                            value: item.id }
+                            value: item.id+"" }
                     }
                     ): [];
                     return UserList;
@@ -97,7 +91,55 @@ const ProgramAdd = () => {
                     },
                 ]}
             />
-            <ProFormRadio.Group
+            <ProFormSelect
+                name="team_id"
+                label="所属团队"
+                width="md"
+                fieldProps={{
+                    onChange: async (value) => {
+                        console.log('%c [ value ]-93', 'font-size:16px; background:#93b3bf; color:#f1d8ff;', value)
+                    },
+                }}
+                request={async () => {
+                    const data = await getTeamList()
+                    console.log('%c [ data ]-113', 'font-size:16px; background:#582a0b; color:#9c6e4f;', data)
+                    const TeamList = data.data ? data.data.map((item) => {
+                        // return { label: item.nickname, value: item.id }
+                        return {
+                            label: (
+                                <div style={{display: 'flex',alignItems:'center'}}>
+                                    <Avatar src={item.team_pic} size={24} style={{marginRight:'8px'}}>{item.name}</Avatar>
+                                    {item.name}
+                                </div>
+                            ), 
+                            value: item.id }
+                    }
+                    ): [];
+                    return TeamList;
+                }}
+                rules={[
+                    {
+                        required: true,
+                        message: (
+                            "所属团队为必选项"
+                        ),
+                    },
+                ]}
+            >
+
+            </ProFormSelect>
+            <Button type="dashed" icon={<UsergroupAddOutlined />}>
+                新建团队
+            </Button>
+
+            <ProFormSelect
+                name="status"
+                label="状态"
+                width="md"
+            >
+
+            </ProFormSelect>
+            {/* <ProFormRadio.Group
                 name="status"
                 label="状态"
                 options={[
@@ -105,7 +147,7 @@ const ProgramAdd = () => {
                     { label: '已作废', value: '已作废' }
                 ]}
                 rules={[{ required: true, message: '状态不能为空' }]}
-            />
+            /> */}
             <ProFormDatePicker
                 name="publishTime"
                 label="时间"
