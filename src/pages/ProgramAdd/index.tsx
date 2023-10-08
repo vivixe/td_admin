@@ -12,12 +12,15 @@ import {
     Button,
     Tag,
     Upload,
-    Modal
+    Form,
+    message
 } from 'antd';
-import { UsergroupAddOutlined } from '@ant-design/icons'
+import { UsergroupAddOutlined,UploadOutlined } from '@ant-design/icons'
 import { isEmpty } from 'lodash';
 import { getProgramInfo, getUserSelect } from '@/services/admin/program'
+import type { UploadProps } from 'antd';
 import { getTeamList } from '@/services/admin/team';
+import { getOssSign } from '@/services/admin/system';
 import { useLocation } from '@umijs/max'
 import { programStatus } from '@/data/programStatus';
 import type { UploadFile } from 'antd/es/upload/interface';
@@ -67,23 +70,28 @@ const ProgramAdd = () => {
     const AliyunOSSUpload = ({ value, onChange }: AliyunOSSUploadProps) => {
         const [OSSData, setOSSData] = useState<OSSDataType>();
       
-        // Mock get OSS api
-        // https://help.aliyun.com/document_detail/31988.html
-        const mockGetOSSData = () => ({
-          dir: 'user-dir/',
-          expire: '1577811661',
-          host: '//www.mocky.io/v2/5cc8019d300000980a055e76',
-          accessId: 'c2hhb2RhaG9uZw==',
-          policy: 'eGl4aWhhaGFrdWt1ZGFkYQ==',
-          signature: 'ZGFob25nc2hhbw==',
-        });
+        const getOssSignInfo = () => {
+            return getOssSign({})
+        }
       
         const init = async () => {
           try {
-            const result = await mockGetOSSData();
-            setOSSData(result);
+            const {data:result} = await getOssSignInfo();
+            console.log('%c [ result ]-99', 'font-size:16px; background:#e51858; color:#ff5c9c;', result)
+            let config = {
+                dir: result.dirPath+'',
+                expire: result.key+'',
+                host: result.host+'',
+                accessId: result.OSSAccessKeyId+'',
+                policy: result.policy+'',
+                signature: result.signature+''
+            }
+            console.log('%c [ config ]-90', 'font-size:16px; background:#01a4c2; color:#45e8ff;', config)
+            setOSSData(config);
           } catch (error) {
-            message.error(error);
+            if(error) {
+                message.error(error+'');
+            }
           }
         };
       
@@ -144,14 +152,6 @@ const ProgramAdd = () => {
           </Upload>
         );
       };
-      
-      const App: React.FC = () => (
-        <Form labelCol={{ span: 4 }}>
-          <Form.Item label="Photos" name="photos">
-            <AliyunOSSUpload />
-          </Form.Item>
-        </Form>
-      );
 
     const loadingPage = isEmpty(detail);
 
@@ -282,20 +282,10 @@ const ProgramAdd = () => {
                     rules={[{ required: true, message: '时间不能为空' }]}
                 />
 
-                <Upload
-                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                    listType="picture-card"
-                // fileList={fileList}
-                // onPreview={handlePreview}
-                // onChange={handleChange}
-                >
-                    {/* {fileList.length >= 1 ? null : uploadButton} */}
-                </Upload>
-                <Modal
-                // open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-                // <img alt="example" style={{ width: '100%' }} src={previewImage} /
-                >
-                </Modal>
+                
+                <Form.Item label="Photos" name="photos">
+                    <AliyunOSSUpload />
+                </Form.Item>
             </ProForm>
         )}
     </PageContainer>

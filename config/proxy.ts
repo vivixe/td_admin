@@ -18,6 +18,11 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },
+    '/upload': {
+      target: 'http://oss-cn-hangzhou.aliyuncs.com/',
+      changeOrigin: true,
+      pathRewrite: { '^/upload': '' },
+    }
   },
 
   /**

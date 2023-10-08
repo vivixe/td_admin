@@ -276,4 +276,18 @@ declare namespace API {
     name?: string;
     team_pic?: string;
   }
+
+  type OssData = {
+    data: {
+      signature?: string,
+      policy?: string,
+      host?: string,
+      OSSAccessKeyId?: string,
+      key?: number,
+      success_action_status?: number,
+      dirPath?: string
+    },
+    message?: string,
+    status: number,
+  }
 }
