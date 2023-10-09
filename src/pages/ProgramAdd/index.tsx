@@ -40,7 +40,6 @@ const ProgramAdd = () => {
     // 只有通过校验之后才会触发这个方法
     const onSubmit = async (values: object) => {
         console.log('%c [ values ]-25', 'font-size:16px; background:#133f21; color:#578365;', values)
-        saveProgramInfo(values)
         const res = await saveProgramInfo(values);
         if (res.status === 0) {
             success();
@@ -246,6 +245,10 @@ const ProgramAdd = () => {
                         width="md"
                         placeholder="请输入名称"
                         rules={[{ required: true, message: '名称不能为空' }]}
+                    />
+                    <ProFormText
+                        name="program_id"
+                        hidden={true}
                     />
                     <ProFormSelect
                         name="owner"

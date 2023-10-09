@@ -43,9 +43,10 @@ const programStatus = [
 ]
 
 const ProgramStatus: React.FC<ProgramStatusProps> = (props) => {
+	const selectStatus = programStatus.find(item => item.value === Number(props.status))
     return (
         <div>
-            <Tag color={programStatus[Number(props.status)].color}>{programStatus[Number(props.status)].label}</Tag>
+            <Tag color={selectStatus?.color || 'blue'}>{selectStatus?.label || '未知状态'}</Tag>
         </div>
     )
 }
