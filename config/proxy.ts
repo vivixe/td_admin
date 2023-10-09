@@ -17,11 +17,6 @@ export default {
       target: 'http://localhost:3007/',
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
-    },
-    '/upload': {
-      target: 'http://oss-cn-hangzhou.aliyuncs.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/upload': '' },
     }
   },
 

@@ -1,0 +1,1 @@
+export const Oss_host = "//xwh-wsp.oss-cn-hangzhou.aliyuncs.com"

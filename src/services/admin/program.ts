@@ -22,10 +22,10 @@ export async function getProgramList(
 }
 
 export async function getProgramInfo(
-     body: {
+    body: {
         id?: string;
-     },
-     options?: { [key: string]: any },
+    },
+    options?: { [key: string]: any },
 ) {
     return request<API.ProgramInfo>('/api/my/program/proinfo', {
         method: 'POST',
@@ -47,4 +47,18 @@ export async function getUserSelect(
         },
         ...(options || {}),
     })
+}
+
+export async function saveProgramInfo(
+    body: API.ProgramListItem,
+    options?: { [key: string]: any },
+) {
+    return request<API.FormUpdate>('/api/my/program/saveproinfo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data: body,
+        ...(options || {}),
+    });
 }
