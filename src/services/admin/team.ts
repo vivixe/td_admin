@@ -15,6 +15,7 @@ export async function getTeamList(options?: { [key: string]: any }) {
 export async function getMemberList(
   body: {
     id?: string;
+    user_name?: string;
   },
   options?: { [key: string]: any },
 ) {

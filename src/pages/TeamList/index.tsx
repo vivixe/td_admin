@@ -29,6 +29,10 @@ const TeamList: React.FC = () => {
   };
   const TableStyle: React.CSSProperties = {
     flex: 1,
+    zIndex: 0,
+  };
+  const AvatarStyle: React.CSSProperties = {
+    marginRight: 12,
   };
 
   const columns: ProColumns<API.TeamMemberItem>[] = [
@@ -42,6 +46,7 @@ const TeamList: React.FC = () => {
     {
       title: '职位',
       dataIndex: 'position_name',
+      hideInSearch: true,
       render: (dom) => {
         return <div>{dom}</div>;
       },
@@ -71,9 +76,6 @@ const TeamList: React.FC = () => {
         >
           移除
         </a>,
-        // <a key="subscribeAlert" href="https://procomponents.ant.design/">
-        //   111
-        // </a>,
       ],
     },
   ];
@@ -106,13 +108,19 @@ const TeamList: React.FC = () => {
     }, []);
 
     const menuItem = teamList.map((item) => (
-      <Menu.Item key={item.key}>
+      <Menu.Item key={item.key} style={{ display: 'flex', alignItems: 'center' }}>
         {item.team_pic !== '' ? (
-          <Avatar src={<img src={item.team_pic} alt="avatar" />}></Avatar>
+          <Avatar
+            style={AvatarStyle}
+            size={24}
+            src={<img src={item.team_pic} alt="avatar" />}
+          ></Avatar>
         ) : (
-          <Avatar>{item.label}</Avatar>
+          <Avatar style={AvatarStyle} size={24}>
+            {item.label}
+          </Avatar>
         )}
-        {item.label}
+        <span>{item.label}</span>
       </Menu.Item>
     ));
     return (
