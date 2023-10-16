@@ -3,20 +3,20 @@
 
 declare namespace API {
   type UserInfoParams = {
-    id?: number,
-  }
+    id?: number;
+  };
 
   type UserInfo = {
-    id?: number,
-    username?: string,
-    nickname?: string,
-    address?: string,
-    email?: string,
-    introduction?: string,
-    phone?: string,
-    sex?: string,
-    user_pic?:string
-  }
+    id?: number;
+    username?: string;
+    nickname?: string;
+    address?: string;
+    email?: string;
+    introduction?: string;
+    phone?: string;
+    sex?: string;
+    user_pic?: string;
+  };
 
   type CurrentUser = {
     name?: string;
@@ -49,6 +49,12 @@ declare namespace API {
   };
 
   type PageParams = {
+    page_no?: number;
+    page_size?: number;
+  };
+
+  type TeamListParams = {
+    id?: string;
     page_no?: number;
     page_size?: number;
   };
@@ -143,7 +149,6 @@ declare namespace API {
   };
 
   type WorkerListItem = {
-    // select a.id,a.name as name,a.date,a.status,a.age,a.address,a.email,a.phone,a.avatar,a.sex,b.name as position_name,b.type as position_type from worker_info a left join position_info b on a.position_id = b.id
     id?: number;
     name?: string;
     date?: string;
@@ -169,7 +174,7 @@ declare namespace API {
   type FormUpdate = {
     status?: number;
     message?: string;
-  }
+  };
 
   type PositionListParams = {
     name?: string;
@@ -218,9 +223,9 @@ declare namespace API {
   };
 
   type ProgramInfo = {
-    data?: Object,
-    status?: number
-  }
+    data?: Object;
+    status?: number;
+  };
 
   type ProgramInfoItem = {
     key_id?: number;
@@ -243,19 +248,19 @@ declare namespace API {
     demand_count?: number;
     mission_count?: number;
     bug_count?: number;
-  }
+  };
 
   type UserList = {
-    data?: UserItem[],
-    total?: number
-  }
+    data?: UserItem[];
+    total?: number;
+  };
 
   type UserItem = {
-    id?: number,
-    nickname?: string,
-    user_pic?: string,
-    username?: string
-  }
+    id?: number;
+    nickname?: string;
+    user_pic?: string;
+    username?: string;
+  };
 
   type NoticeList = {
     data?: NoticeListItem[];
@@ -284,26 +289,41 @@ declare namespace API {
   type TeamList = {
     data?: TeamItem[];
     total?: number;
-  }
+  };
 
   type TeamItem = {
     id?: string;
     intro?: string;
     name?: string;
     team_pic?: string;
-  }
+  };
+
+  type TeamMemberList = {
+    data?: TeamMemberItem[];
+    total?: number;
+  };
+
+  type TeamMemberItem = {
+    avatar: string;
+    id: string;
+    name: string;
+    position_id: string;
+    position_name: string;
+    user_name: string;
+    worker_id: string;
+  };
 
   type OssData = {
     data: {
-      signature?: string,
-      policy?: string,
-      host?: string,
-      OSSAccessKeyId?: string,
-      key?: number,
-      success_action_status?: number,
-      dirPath?: string
-    },
-    message?: string,
-    status: number,
-  }
+      signature?: string;
+      policy?: string;
+      host?: string;
+      OSSAccessKeyId?: string;
+      key?: number;
+      success_action_status?: number;
+      dirPath?: string;
+    };
+    message?: string;
+    status: number;
+  };
 }

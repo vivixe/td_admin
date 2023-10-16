@@ -29,6 +29,7 @@ export default {
   'menu.worker.worker-detail': '职员详情',
   'menu.worker.worker-add': '添加职员',
   'menu.worker.worker-edit': '编辑职员',
+  'menu.worker.team-list': '团队管理',
   'menu.info': '信息管理',
   'menu.info.info-list': '通知管理',
   'menu.program': '项目管理',

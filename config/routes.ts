@@ -55,7 +55,7 @@ export default [
     name: 'worker',
     icon: 'user',
     path: '/worker',
-    routes : [
+    routes: [
       {
         path: '/worker',
         redirect: '/worker/list',
@@ -71,14 +71,20 @@ export default [
         icon: 'table',
         path: '/worker/position',
         component: './PositionList',
-      }
-    ]
+      },
+      {
+        name: 'team-list',
+        icon: 'table',
+        path: '/worker/team',
+        component: './TeamList',
+      },
+    ],
   },
   {
     name: 'program',
     icon: 'profile',
     path: '/program',
-    routes : [
+    routes: [
       {
         path: '/program',
         redirect: '/program/list',
@@ -94,9 +100,9 @@ export default [
         icon: 'table',
         path: '/program/add',
         component: './ProgramAdd',
-        hideInMenu:true
-      }
-    ]
+        hideInMenu: true,
+      },
+    ],
   },
   {
     name: 'info',
@@ -112,8 +118,8 @@ export default [
         icon: 'table',
         path: '/info/list',
         component: './NoticeList',
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/',
