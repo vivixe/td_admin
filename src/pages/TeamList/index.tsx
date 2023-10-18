@@ -1,31 +1,49 @@
-import { getMemberList, getTeamList } from '@/services/admin/team';
-import { PlusOutlined } from '@ant-design/icons';
+import {
+  deleteTeam,
+  getMemberList,
+  getTeamList,
+  removeMember,
+  saveTeam,
+} from '@/services/admin/team';
+import { DeleteOutlined, EditOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
-import { Avatar, Button, Flex, Menu, message } from 'antd';
+import { Avatar, Button, Flex, Menu, message, Popover, Space, Typography } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import TeamForm from './components/TeamForm';
 
-const TeamList: React.FC = () => {
-  const [current, setCurrent] = useState('');
+const TeamTable: React.FC = () => {
+  const [currentTeam, setCurrentTeam] = useState<API.TeamItem>();
   const [teamList, setTeamList] = useState<
-    { key: string; label: string; team_pic: string; intro: string }[]
+    { id: string; name: string; team_pic: string; intro: string }[]
   >([]);
-  const [currentRow, setCurrentRow] = useState<API.TeamMemberItem>();
+  // const [currentRow, setCurrentRow] = useState<API.TeamMemberItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.TeamMemberItem[]>([]);
+  const [teamModalOpen, handleTeamModalOpen] = useState<boolean>(false);
+  // const [selectMembersModalOpen,handleSelectMembersModalOpen] = useState<boolean>(false)
   const actionRef = useRef<ActionType>();
   const [messageApi, contextHolder] = message.useMessage();
+  const [needReload, setNeedReload] = useState<boolean>(false);
 
-  const success = () => {
+  const success = (msg: string) => {
     messageApi.open({
       type: 'success',
-      content: '移除成功！',
+      content: msg || '操作成功！',
     });
   };
 
   const listStyle: React.CSSProperties = {
-    width: 220,
+    width: 240,
     padding: 8,
+    paddingRight: 0,
+    backgroundColor: 'white',
+  };
+  const TeamListTitleStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12,
   };
   const TableStyle: React.CSSProperties = {
     flex: 1,
@@ -33,6 +51,17 @@ const TeamList: React.FC = () => {
   };
   const AvatarStyle: React.CSSProperties = {
     marginRight: 12,
+  };
+  const MenuItemStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+  };
+  const MenuItemBtnStyle: React.CSSProperties = {
+    position: 'absolute',
+    right: 6,
+    top: '50%',
+    transform: 'translateY(-50%)',
   };
 
   const columns: ProColumns<API.TeamMemberItem>[] = [
@@ -59,19 +88,17 @@ const TeamList: React.FC = () => {
         <a
           key="config"
           onClick={() => {
-            console.log(
-              '%c [ record ]: ',
-              'color: #bf2c9f; background: pink; font-size: 13px;',
-              record,
-            );
-            // handleUpdateModalOpen(true);
-            setCurrentRow(record);
-            console.log(
-              '%c [ currentRow ]: ',
-              'color: #bf2c9f; background: pink; font-size: 13px;',
-              currentRow,
-            );
-            success();
+            removeMember({
+              id: currentTeam?.id,
+              members: record?.worker_id,
+            }).then((res) => {
+              if (res.status === 0) {
+                success(res.message || '');
+                if (actionRef.current) {
+                  actionRef.current.reload();
+                }
+              }
+            });
           }}
         >
           移除
@@ -82,7 +109,7 @@ const TeamList: React.FC = () => {
 
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
-    setCurrent(e.key);
+    setCurrentTeam(teamList.find((item) => item.id === e.key));
   };
 
   function TeamList() {
@@ -93,22 +120,63 @@ const TeamList: React.FC = () => {
           'font-size:16px; background:#414b82; color:#858fc6;',
           result,
         );
-        let menuArr: { key: string; label: string; team_pic: string; intro: string }[] = [];
+        let menuArr: { id: string; name: string; team_pic: string; intro: string }[] = [];
         result.data?.forEach((item) => {
           menuArr.push({
-            key: item.id || '',
-            label: item.name || '',
+            id: item.id || '',
+            name: item.name || '',
             team_pic: item.team_pic || '',
             intro: item.intro || '',
           });
         });
         setTeamList(menuArr);
-        setCurrent(menuArr[0].key);
+        setCurrentTeam(menuArr[0]);
+        setNeedReload(false);
       });
-    }, []);
+    }, [needReload]);
+
+    const { Link, Title } = Typography;
+
+    function handleTeamEdit() {
+      handleTeamModalOpen(true);
+    }
+
+    function handleTeamRemove() {
+      console.log(
+        '%c [ currentTeam ]: ',
+        'color: #bf2c9f; background: pink; font-size: 13px;',
+        currentTeam,
+      );
+      let data = {
+        id: currentTeam?.id,
+      };
+      deleteTeam(data).then((res) => {
+        if (res.status === 0) {
+          success(res.message || '');
+          setNeedReload(true);
+        }
+      });
+    }
+
+    const teamActions = (
+      <div>
+        <Space direction="vertical" size="small" style={{ display: 'flex' }}>
+          <div>
+            <Link onClick={handleTeamEdit}>
+              <EditOutlined /> 编辑
+            </Link>
+          </div>
+          <div>
+            <Link type="danger" onClick={handleTeamRemove}>
+              <DeleteOutlined /> 解散
+            </Link>
+          </div>
+        </Space>
+      </div>
+    );
 
     const menuItem = teamList.map((item) => (
-      <Menu.Item key={item.key} style={{ display: 'flex', alignItems: 'center' }}>
+      <Menu.Item key={item.id} style={MenuItemStyle}>
         {item.team_pic !== '' ? (
           <Avatar
             style={AvatarStyle}
@@ -117,19 +185,43 @@ const TeamList: React.FC = () => {
           ></Avatar>
         ) : (
           <Avatar style={AvatarStyle} size={24}>
-            {item.label}
+            {item.name}
           </Avatar>
         )}
-        <span>{item.label}</span>
+        <span>{item.name}</span>
+        <Popover content={teamActions} trigger="click">
+          <Button
+            size="small"
+            type="link"
+            style={MenuItemBtnStyle}
+            icon={<MoreOutlined />}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          ></Button>
+        </Popover>
       </Menu.Item>
     ));
-    return (
-      // <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={teamList} style={listStyle}>
 
-      // </Menu>
-      <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" style={listStyle}>
-        {menuItem}
-      </Menu>
+    return (
+      <div style={listStyle}>
+        <div style={TeamListTitleStyle}>
+          <Title level={4}>团队</Title>
+          <Button
+            size="small"
+            type="link"
+            icon={<PlusOutlined />}
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentTeam({});
+              handleTeamModalOpen(true);
+            }}
+          ></Button>
+        </div>
+        <Menu onClick={onClick} selectedKeys={[currentTeam?.id || '']} mode="vertical">
+          {menuItem}
+        </Menu>
+      </div>
     );
   }
 
@@ -138,7 +230,7 @@ const TeamList: React.FC = () => {
       <Flex vertical={false}>
         {TeamList()}
         <ProTable<API.TeamMemberItem, API.TeamListParams>
-          headerTitle="职位列表"
+          headerTitle="团队"
           actionRef={actionRef}
           rowKey="worker_id"
           search={{
@@ -150,7 +242,7 @@ const TeamList: React.FC = () => {
               type="primary"
               key="primary"
               onClick={() => {
-                // handleUpdateModalOpen(true);
+                // handleSelectMembersModalOpen(true);
               }}
             >
               <PlusOutlined /> 新增成员
@@ -159,7 +251,7 @@ const TeamList: React.FC = () => {
           request={async (params = {}, sort, filter) => {
             console.log(params, sort, filter);
             const res = await getMemberList({
-              id: current,
+              id: currentTeam?.id,
             });
             console.log(res);
             return Promise.resolve({
@@ -170,7 +262,7 @@ const TeamList: React.FC = () => {
           }}
           columns={columns}
           params={{
-            id: current,
+            id: currentTeam?.id,
           }}
           rowSelection={{
             onChange: (_, selectedRows) => {
@@ -188,11 +280,6 @@ const TeamList: React.FC = () => {
             extra={
               <div>
                 已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项 &nbsp;&nbsp;
-                <span>
-                  {/* 总共滴{' '} */}
-                  {/* {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '} */}
-                  {/* 万 */}
-                </span>
               </div>
             }
           >
@@ -204,22 +291,31 @@ const TeamList: React.FC = () => {
                 actionRef.current?.reloadAndRest?.();
               }}
               disabled={selectedRowsState.length === 0}
-              // disabled={true}
             >
               批量移除
             </Button>
-            {/* <Button
-                            type="primary"
-                            disabled={true}
-                        >
-                            批量启用
-                        </Button> */}
           </FooterToolbar>
         )}
         {contextHolder}
       </Flex>
+      <TeamForm
+        onSubmit={async (value) => {
+          const res = await saveTeam(value);
+          if (res.status === 0) {
+            success(res.message || '');
+            handleTeamModalOpen(false);
+            setCurrentTeam({});
+            setNeedReload(true);
+          }
+        }}
+        onCancel={() => {
+          handleTeamModalOpen(false);
+        }}
+        teamModalOpen={teamModalOpen}
+        values={currentTeam || {}}
+      />
     </PageContainer>
   );
 };
 
-export default TeamList;
+export default TeamTable;
