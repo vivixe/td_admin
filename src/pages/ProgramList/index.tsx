@@ -18,9 +18,11 @@ const { useBreakpoint } = Grid;
 
 const ProgramList: React.FC = () => {
   const screens = useBreakpoint();
-  console.log('%c [ screens ]-23', 'font-size:16px; background:#8b66eb; color:#cfaaff;', screens);
 
-  const breakpoints = {
+  interface Breakpoints {
+    [key: string]: { gutter: number; column: number };
+  }
+  const breakpoints: Breakpoints = {
     xxl: { gutter: 12, column: 3 },
     xl: { gutter: 12, column: 2 },
     lg: { gutter: 12, column: 2 },
@@ -29,21 +31,32 @@ const ProgramList: React.FC = () => {
     xs: { gutter: 0, column: 1 },
   };
 
-  const comGrid = (screens: Partial<Record<Breakpoint, boolean>>) => {
-    const keys = Object.keys(screens).filter((key) => screens[key]);
+  const getBreakpoint = (key: string) => {
+    return breakpoints[key];
+  };
 
-    if (keys.length === 0) {
+  const getActiveKeys = (screens: Partial<Record<Breakpoint, boolean>>) => {
+    return Object.keys(screens).filter(
+      (key: string) => key in screens && key in breakpoints && screens[key] === true,
+    );
+  };
+
+  const getActiveBreakpoint = (screens: Partial<Record<Breakpoint, boolean>>) => {
+    const activeKeys = getActiveKeys(screens);
+    console.log(
+      '%c [ activeKeys ]-44',
+      'font-size:16px; background:#30f4c1; color:#74ffff;',
+      activeKeys,
+    );
+    if (activeKeys.length === 0) {
       return {};
     }
+    return activeKeys.reduce((result, key) => ({ ...result, ...getBreakpoint(key) }), {});
+  };
 
-    let result = {};
-
-    for (let key of keys) {
-      result = { ...result, ...breakpoints[key] };
-    }
-    console.log('%c [ result ]-49', 'font-size:16px; background:#8711c9; color:#cb55ff;', result);
-
-    return result;
+  const comGrid = (screens: Partial<Record<Breakpoint, boolean>>) => {
+    const activeLayout = getActiveBreakpoint(screens);
+    return activeLayout;
   };
 
   return (
@@ -89,13 +102,11 @@ const ProgramList: React.FC = () => {
           defaultPageSize: 6,
           showSizeChanger: true,
         }}
-        request={async (params = {}, sort, filter) => {
-          console.log(params, sort, filter);
+        request={async (params = {}) => {
           const res = await getProgramList({
             current: params.current,
             pageSize: params.pageSize,
           });
-          console.log(res);
           return Promise.resolve({
             data: res.data?.map((item) => {
               return {
