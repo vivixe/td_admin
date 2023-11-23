@@ -105,6 +105,23 @@ export default [
     ],
   },
   {
+    name: 'workspace',
+    icon: 'desktop',
+    path: '/workspace',
+    routes: [
+      {
+        path: '/workspace',
+        redirect: '/workspace/home',
+      },
+      {
+        name: 'workspace-home',
+        icon: 'desktop',
+        path: '/workspace/home',
+        component: './WorkSpace',
+      },
+    ],
+  },
+  {
     name: 'info',
     icon: 'mail',
     path: '/info',

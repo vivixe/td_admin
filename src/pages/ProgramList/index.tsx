@@ -67,19 +67,6 @@ const ProgramList: React.FC = () => {
           key: 'base',
         },
       ]}
-      // extra={[
-      //   <Button key="3">操作</Button>,
-      //   <Button key="2">操作</Button>,
-      //   <Button key="1" type="primary">
-      //     主操作
-      //   </Button>,
-      // ]}
-      // footer={[
-      //   <Button key="rest">重置</Button>,
-      //   <Button key="submit" type="primary">
-      //     提交
-      //   </Button>,
-      // ]}
     >
       <ProList<any>
         toolBarRender={() => [
@@ -128,7 +115,18 @@ const ProgramList: React.FC = () => {
                 ),
                 // avatar: item.team_pic ? item.team_pic : 'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png',
                 actions: [
-                  <a key="work">工作</a>,
+                  <a
+                    key="work"
+                    onClick={() => {
+                      console.log('item.program_id', item.program_id);
+                      history.push({
+                        pathname: '/workspace/home',
+                        search: 'id=' + item.program_id,
+                      });
+                    }}
+                  >
+                    工作
+                  </a>,
                   <a key="data">分析</a>,
                   <a
                     key="edit"

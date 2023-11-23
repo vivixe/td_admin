@@ -250,6 +250,61 @@ declare namespace API {
     bug_count?: number;
   };
 
+  type ProgramDetail = {
+    data?: {
+      baseInfo: BaseInfo;
+      memberInfo: MemberInfo[];
+    };
+    status?: number;
+  };
+
+  // type ProgramDetail = {
+  //   data?: object,
+  //   status?: number
+  // }
+
+  type BaseInfo = {
+    demand: string;
+    earn: string;
+    id: string;
+    keyid: number;
+    member: null;
+    members: string;
+    name: string;
+    nickname: string;
+    owner: string;
+    programid: string;
+    propic: string;
+    status: string;
+    teamid: string;
+    team_intro: string;
+    team_name: string;
+    team_pic: string;
+    time: string;
+    user_pic: string;
+    username: string;
+  };
+
+  type MemberInfo = {
+    address: string;
+    age: number;
+    avatar: null;
+    date: string;
+    email: string;
+    id: string;
+    isDel: string;
+    key: number;
+    name: string;
+    password: string;
+    phone: string;
+    positionid: string;
+    sex: string;
+    status: string;
+    team_role: null;
+    wx_code: null;
+    wx_nickname: null;
+  };
+
   type UserList = {
     data?: UserItem[];
     total?: number;
@@ -325,5 +380,38 @@ declare namespace API {
     };
     message?: string;
     status: number;
+  };
+
+  type DemandList = {
+    data?: DemandItem[];
+    message?: string;
+    status?: number;
+    total?: number;
+  };
+
+  type DemandItem = {
+    assignee?: string;
+    avatar?: string;
+    complete_desc?: string;
+    complete_time?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    email?: string;
+    id?: string;
+    is_submit?: number;
+    name?: string;
+    nickname?: string;
+    phone?: string;
+    position_name?: string;
+    priority?: string;
+    sex?: string;
+    source?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
+    user_pic?: string;
+    username?: string;
   };
 }
