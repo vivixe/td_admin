@@ -92,3 +92,5 @@ export const Deamnd = {
     },
   ],
 };
+
+export const Mission = {};

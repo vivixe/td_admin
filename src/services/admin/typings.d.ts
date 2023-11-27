@@ -414,4 +414,57 @@ declare namespace API {
     user_pic?: string;
     username?: string;
   };
+
+  type MissionList = {
+    data?: MissionItem[];
+    message?: string;
+    status?: number;
+    total?: number;
+  };
+
+  type MissionItem = {
+    assignee: string;
+    avatar: null | string;
+    complete_desc: null | string;
+    complete_time: null | string;
+    content: string;
+    cost_time: null | string;
+    create_time: string;
+    creator: string;
+    demand_id: string;
+    email: string;
+    estimate_time: string;
+    id: string;
+    is_del: string;
+    is_submit: number;
+    key: number;
+    name: string;
+    nickname: string;
+    phone: string;
+    position_name: string;
+    priority: string;
+    program_id: string;
+    sex: string;
+    source: string;
+    status: string;
+    time_record: null | string;
+    title: string;
+    type: string;
+    user_pic: string;
+    username: string;
+    version_id: string;
+    version_name: string;
+    version_relate_type: number;
+  };
+
+  type ProgramSelect = {
+    data?: ProgramSelectItem[];
+    status?: number;
+    message?: string;
+  };
+
+  type ProgramSelectItem = {
+    program_id?: string;
+    name?: string;
+  };
 }

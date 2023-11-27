@@ -1,18 +1,18 @@
 import { Deamnd, tabsList } from '@/data/WorkSpace';
-import { getDemandList } from '@/services/admin/demand';
+import { getMissionList } from '@/services/admin/mission';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import './demand.less';
+import '../demand/demand.less';
 
 const getCurTabLabel = (value: string) => {
   return tabsList.find((item) => item.key === value)?.tab;
 };
 
-export type DemandListProps = {
+export type MissionListProps = {
   id: string;
 };
 
@@ -48,10 +48,10 @@ const items: MenuProps['items'] = [
 
 const curTab = '1';
 
-const DemandList: React.FC<DemandListProps> = (props) => {
-  const [currentRow, setCurrentRow] = useState<API.DemandItem>();
+const MissionList: React.FC<MissionListProps> = (props) => {
+  const [currentRow, setCurrentRow] = useState<API.MissionItem>();
 
-  const [demandList, setDemandList] = useState<API.DemandItem[]>([]);
+  const [missionList, setMissionList] = useState<API.MissionItem[]>([]);
 
   const actionRef = useRef<ActionType>();
 
@@ -64,20 +64,12 @@ const DemandList: React.FC<DemandListProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log(
-      '%c [ props.id ]-105',
-      'font-size:16px; background:#93b3bf; color:#f1d8ff;',
-      props.id,
-    );
-    if (props.id) {
-      getDemandList({ current: 1, pageSize: 1000, program_id: props.id }, {}).then((res) => {
-        console.log('%c [ res ]-69', 'font-size:16px; background:#f3d258; color:#ffff9c;', res);
-        setDemandList(res.data || []);
-      });
-    }
+    getMissionList({ current: 1, pageSize: 1000, program_id: props.id }, {}).then((res) => {
+      setMissionList(res.data || []);
+    });
   }, [props.id]);
 
-  const columns: ProColumns<API.DemandItem>[] = [
+  const columns: ProColumns<API.MissionItem>[] = [
     {
       title: '发布者',
       dataIndex: 'creator',
@@ -96,6 +88,21 @@ const DemandList: React.FC<DemandListProps> = (props) => {
               <div className="name-v">{entity.nickname ? entity.nickname : entity.username}</div>
               <div className="id-v">{entity.create_time}</div>
             </div>
+          </div>
+        );
+      },
+    },
+    {
+      title: '优先级',
+      dataIndex: 'priority',
+      render: (dom, entity) => {
+        return (
+          <div>
+            <Tag
+              color={Deamnd.priorityList.find((item) => item.id === Number(entity.priority))?.color}
+            >
+              {Deamnd.priorityList.find((item) => item.id === Number(entity.priority))?.label}
+            </Tag>
           </div>
         );
       },
@@ -166,15 +173,13 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       },
     },
     {
-      title: '优先级',
-      dataIndex: 'priority',
+      title: '关联版本',
+      dataIndex: 'version',
       render: (dom, entity) => {
         return (
           <div>
-            <Tag
-              color={Deamnd.priorityList.find((item) => item.id === Number(entity.priority))?.color}
-            >
-              {Deamnd.priorityList.find((item) => item.id === Number(entity.priority))?.label}
+            <Tag color={Deamnd.typeList.find((item) => item.id === Number(entity.type))?.color}>
+              {Deamnd.typeList.find((item) => item.id === Number(entity.type))?.label}
             </Tag>
           </div>
         );
@@ -206,14 +211,14 @@ const DemandList: React.FC<DemandListProps> = (props) => {
   ];
 
   return (
-    <ProTable<API.DemandItem, API.PageParams>
+    <ProTable<API.MissionItem, API.PageParams>
       headerTitle={getCurTabLabel(curTab) + '列表'}
       actionRef={actionRef}
       rowKey={(record) => record.id + ''}
       search={{
         labelWidth: 120,
       }}
-      dataSource={demandList}
+      dataSource={missionList}
       toolBarRender={() => [
         <Button
           type="primary"
@@ -240,4 +245,4 @@ const DemandList: React.FC<DemandListProps> = (props) => {
   );
 };
 
-export default DemandList;
+export default MissionList;

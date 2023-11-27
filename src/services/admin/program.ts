@@ -73,3 +73,13 @@ export async function getProgramDetail(
     ...(options || {}),
   });
 }
+
+export async function getProgramSelect(options?: { [key: string]: any }) {
+  return request<API.ProgramSelect>('/api/my/program/proselect', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    ...(options || {}),
+  });
+}
