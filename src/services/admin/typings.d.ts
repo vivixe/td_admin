@@ -457,6 +457,47 @@ declare namespace API {
     version_relate_type: number;
   };
 
+  type BugList = {
+    data?: BugItem[];
+    message?: string;
+    status?: number;
+    total?: number;
+  };
+
+  type BugItem = {
+    assignee?: string;
+    avatar?: null;
+    complete_desc?: null;
+    complete_time?: null;
+    content?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    email?: string;
+    estimate_time?: string;
+    id?: string;
+    is_del?: string;
+    is_submit?: number;
+    key?: number;
+    name?: string;
+    nickname?: string;
+    phone?: string;
+    position_name?: string;
+    priority?: string;
+    program_id?: string;
+    reappear?: string;
+    severity?: string;
+    sex?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
+    user_pic?: string;
+    username?: string;
+    version_id?: null;
+    version_relate_type?: number;
+  };
+
   type ProgramSelect = {
     data?: ProgramSelectItem[];
     status?: number;

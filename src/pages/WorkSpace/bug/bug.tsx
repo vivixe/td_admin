@@ -1,18 +1,18 @@
-import { Demand, tabsList } from '@/data/WorkSpace';
-import { getMissionList } from '@/services/admin/mission';
+import { Bug, tabsList } from '@/data/WorkSpace';
+import { getBugList } from '@/services/admin/bug';
 import { DownOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import '../demand/demand.less';
+import './bug.less';
 
 const getCurTabLabel = (value: string) => {
   return tabsList.find((item) => item.key === value)?.tab;
 };
 
-export type MissionListProps = {
+export type BugListProps = {
   id: string;
 };
 
@@ -48,10 +48,10 @@ const items: MenuProps['items'] = [
 
 const curTab = '1';
 
-const MissionList: React.FC<MissionListProps> = (props) => {
-  const [currentRow, setCurrentRow] = useState<API.MissionItem>();
+const BugList: React.FC<BugListProps> = (props) => {
+  const [currentRow, setCurrentRow] = useState<API.BugItem>();
 
-  const [missionList, setMissionList] = useState<API.MissionItem[]>([]);
+  const [bugList, setBugList] = useState<API.BugItem[]>([]);
 
   const actionRef = useRef<ActionType>();
 
@@ -64,12 +64,20 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   };
 
   useEffect(() => {
-    getMissionList({ current: 1, pageSize: 1000, program_id: props.id }, {}).then((res) => {
-      setMissionList(res.data || []);
-    });
+    console.log(
+      '%c [ props.id ]-105',
+      'font-size:16px; background:#93b3bf; color:#f1d8ff;',
+      props.id,
+    );
+    if (props.id) {
+      getBugList({ current: 1, pageSize: 1000, program_id: props.id }, {}).then((res) => {
+        console.log('%c [ res ]-69', 'font-size:16px; background:#f3d258; color:#ffff9c;', res);
+        setBugList(res.data || []);
+      });
+    }
   }, [props.id]);
 
-  const columns: ProColumns<API.MissionItem>[] = [
+  const columns: ProColumns<API.BugItem>[] = [
     {
       title: '发布者',
       dataIndex: 'creator',
@@ -99,9 +107,40 @@ const MissionList: React.FC<MissionListProps> = (props) => {
         return (
           <div>
             <Tag
-              color={Demand.priorityList.find((item) => item.id === Number(entity.priority))?.color}
+              color={Bug.priorityList.find((item) => item.id === Number(entity.priority))?.color}
             >
-              {Demand.priorityList.find((item) => item.id === Number(entity.priority))?.label}
+              {Bug.priorityList.find((item) => item.id === Number(entity.priority))?.label}
+            </Tag>
+          </div>
+        );
+      },
+    },
+    {
+      title: '严重程度',
+      dataIndex: 'severity',
+      key: 'severity',
+      render: (dom, entity) => {
+        return (
+          <div>
+            <Tag
+              color={Bug.severityList.find((item) => item.id === Number(entity.severity))?.color}
+            >
+              {Bug.severityList.find((item) => item.id === Number(entity.severity))?.label}
+            </Tag>
+          </div>
+        );
+      },
+    },
+    {
+      title: '复现程度',
+      dataIndex: 'reappear',
+      render: (dom, entity) => {
+        return (
+          <div>
+            <Tag
+            // color={Bug.reappearList.find((item) => item.id === Number(entity.reappear))?.color}
+            >
+              {Bug.reappearList.find((item) => item.id === Number(entity.reappear))?.label}
             </Tag>
           </div>
         );
@@ -153,39 +192,15 @@ const MissionList: React.FC<MissionListProps> = (props) => {
       },
     },
     {
-      title: '来源',
-      dataIndex: 'source',
-      render: (dom, entity) => {
-        return (
-          <div>
-            <Tag color={Demand.sourceList.find((item) => item.id === Number(entity.source))?.color}>
-              {Demand.sourceList.find((item) => item.id === Number(entity.source))?.label}
-            </Tag>
-          </div>
-        );
-      },
-    },
-    {
       title: '类型',
       dataIndex: 'type',
       render: (dom, entity) => {
         return (
           <div>
-            <Tag color={Demand.typeList.find((item) => item.id === Number(entity.type))?.color}>
-              {Demand.typeList.find((item) => item.id === Number(entity.type))?.label}
-            </Tag>
-          </div>
-        );
-      },
-    },
-    {
-      title: '关联版本',
-      dataIndex: 'version',
-      render: (dom, entity) => {
-        return (
-          <div>
-            <Tag color={Demand.typeList.find((item) => item.id === Number(entity.type))?.color}>
-              {Demand.typeList.find((item) => item.id === Number(entity.type))?.label}
+            <Tag
+            // color={Bug.typeList.find((item) => item.id === Number(entity.type))?.color}
+            >
+              {Bug.typeList.find((item) => item.id === Number(entity.type))?.label}
             </Tag>
           </div>
         );
@@ -217,14 +232,14 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   ];
 
   return (
-    <ProTable<API.MissionItem, API.PageParams>
+    <ProTable<API.BugItem, API.PageParams>
       headerTitle={getCurTabLabel(curTab) + '列表'}
       actionRef={actionRef}
       rowKey={(record) => record.id + ''}
       search={{
         labelWidth: 120,
       }}
-      dataSource={missionList}
+      dataSource={bugList}
       toolBarRender={() => [
         <Button
           type="primary"
@@ -251,4 +266,4 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   );
 };
 
-export default MissionList;
+export default BugList;

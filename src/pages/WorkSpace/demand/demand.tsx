@@ -1,6 +1,6 @@
-import { Deamnd, tabsList } from '@/data/WorkSpace';
+import { Demand, tabsList } from '@/data/WorkSpace';
 import { getDemandList } from '@/services/admin/demand';
-import { DownOutlined, PlusOutlined } from '@ant-design/icons';
+import { DownOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
 import { ProTable } from '@ant-design/pro-components';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
@@ -129,7 +129,13 @@ const DemandList: React.FC<DemandListProps> = (props) => {
         return (
           <div className="info-v">
             <div className="info-left-v">
-              <Avatar size={40} shape="square" src={entity.avatar} alt={entity.name}></Avatar>
+              <Avatar
+                size={40}
+                shape="square"
+                src={entity.avatar}
+                alt={entity.name}
+                icon={<UserOutlined />}
+              ></Avatar>
             </div>
             <div className="info-right-v">
               <div className="name-v">{entity.name}</div>
@@ -145,8 +151,8 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       render: (dom, entity) => {
         return (
           <div>
-            <Tag color={Deamnd.sourceList.find((item) => item.id === Number(entity.source))?.color}>
-              {Deamnd.sourceList.find((item) => item.id === Number(entity.source))?.label}
+            <Tag color={Demand.sourceList.find((item) => item.id === Number(entity.source))?.color}>
+              {Demand.sourceList.find((item) => item.id === Number(entity.source))?.label}
             </Tag>
           </div>
         );
@@ -158,8 +164,8 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       render: (dom, entity) => {
         return (
           <div>
-            <Tag color={Deamnd.typeList.find((item) => item.id === Number(entity.type))?.color}>
-              {Deamnd.typeList.find((item) => item.id === Number(entity.type))?.label}
+            <Tag color={Demand.typeList.find((item) => item.id === Number(entity.type))?.color}>
+              {Demand.typeList.find((item) => item.id === Number(entity.type))?.label}
             </Tag>
           </div>
         );
@@ -172,9 +178,9 @@ const DemandList: React.FC<DemandListProps> = (props) => {
         return (
           <div>
             <Tag
-              color={Deamnd.priorityList.find((item) => item.id === Number(entity.priority))?.color}
+              color={Demand.priorityList.find((item) => item.id === Number(entity.priority))?.color}
             >
-              {Deamnd.priorityList.find((item) => item.id === Number(entity.priority))?.label}
+              {Demand.priorityList.find((item) => item.id === Number(entity.priority))?.label}
             </Tag>
           </div>
         );

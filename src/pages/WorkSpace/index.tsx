@@ -6,6 +6,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { history, useLocation } from '@umijs/max';
 import { Button, Dropdown, Tag } from 'antd';
 import { useEffect, useState } from 'react';
+import BugList from './bug/bug';
 import SelectProgram from './components/selectProgram';
 import DemandList from './demand/demand';
 import './index.css';
@@ -188,6 +189,8 @@ const WorkSpaceHome = () => {
           <DemandList id={program_id || ''} />
         ) : curTab === '2' ? (
           <MissionList id={program_id || ''} />
+        ) : curTab === '3' ? (
+          <BugList id={program_id || ''} />
         ) : null}
         {/* <ProCard direction="column" ghost gutter={[0, 16]}>
                 <ProCard style={{ height: 200 }} />
