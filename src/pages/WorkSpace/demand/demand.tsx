@@ -6,6 +6,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import DetailModal from '../components/detailModal';
 import './demand.less';
 
 const getCurTabLabel = (value: string) => {
@@ -53,6 +54,9 @@ const DemandList: React.FC<DemandListProps> = (props) => {
 
   const [demandList, setDemandList] = useState<API.DemandItem[]>([]);
 
+  const [detailOpen, handleDetailOpen] = useState(true);
+  // const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+
   const actionRef = useRef<ActionType>();
 
   const handleSplit = () => {
@@ -76,6 +80,10 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       });
     }
   }, [props.id]);
+
+  const showModal = () => {
+    handleDetailOpen(true);
+  };
 
   const columns: ProColumns<API.DemandItem>[] = [
     {
@@ -109,9 +117,12 @@ const DemandList: React.FC<DemandListProps> = (props) => {
             <div className="info-right-v">
               <div className="name-v">
                 <a
-                  onClick={() => {
-                    setCurrentRow(entity);
-                  }}
+                  // onClick={() => {
+                  //   handleDetailOpen(true);
+                  //   setCurrentRow(entity);
+                  //   console.log('%c [ 11111 ]: ', 'color: #bf2c9f; background: pink; font-size: 13px;', detailOpen)
+                  // }}
+                  onClick={showModal}
                 >
                   {entity.title}
                 </a>
@@ -242,7 +253,9 @@ const DemandList: React.FC<DemandListProps> = (props) => {
           // setCurrentRow(selectedRows && selectedRows[0]);
         },
       }}
-    />
+    >
+      <DetailModal detailOpen={detailOpen} id={currentRow?.id || ''}></DetailModal>
+    </ProTable>
   );
 };
 

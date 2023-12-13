@@ -415,6 +415,42 @@ declare namespace API {
     username?: string;
   };
 
+  type DemandDetail = {
+    data: DemandDetailData;
+    message?: string;
+    status?: number;
+  };
+
+  type DemandDetailData = {
+    assignee?: string;
+    avatar?: string;
+    complete_desc?: string;
+    complete_time?: string;
+    content?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    email?: string;
+    id?: string;
+    is_del?: string;
+    is_submit?: number;
+    key?: number;
+    name?: string;
+    nickname?: string;
+    phone?: string;
+    position_name?: string;
+    priority?: string;
+    program_id?: string;
+    sex?: string;
+    source?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
+    user_pic?: string;
+    username?: string;
+  };
+
   type MissionList = {
     data?: MissionItem[];
     message?: string;

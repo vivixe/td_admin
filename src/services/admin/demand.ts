@@ -21,3 +21,20 @@ export async function getDemandList(
     ...(options || {}),
   });
 }
+
+// 获取详情 POST /api/my/demand/getDemandDetail
+export async function getDemandDetail(
+  body: {
+    id?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.DemandDetail>('/api/my/demand/getDemandDetail', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
