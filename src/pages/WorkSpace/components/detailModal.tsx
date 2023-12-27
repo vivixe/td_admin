@@ -1,93 +1,89 @@
 import { getDemandDetail } from '@/services/admin/demand';
+import { LoadingOutlined } from '@ant-design/icons';
 import type { TabsProps } from 'antd';
-import { Modal, Space, Tabs, Typography } from 'antd';
-import React, { useEffect } from 'react';
-
-const { Text } = Typography;
+import { Modal, Spin, Tabs } from 'antd';
+import React, { useEffect, useState } from 'react';
+import DetailDesc from './detailDesc';
 
 export type detailProps = {
   detailOpen: boolean;
   id: string;
+  onCancel: () => void;
 };
 
-const onChange = (key: string) => {
-  console.log(key);
+const Loading = () => {
+  return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />;
 };
-
-const items: TabsProps['items'] = [
-  {
-    key: '1',
-    label: '描述',
-    children: 'Content of Tab Pane 1',
-  },
-  {
-    key: '2',
-    label: '进度',
-    children: 'Content of Tab Pane 2',
-  },
-  {
-    key: '3',
-    label: 'Tab 3',
-    children: 'Content of Tab Pane 3',
-  },
-];
 
 const DetailModal: React.FC<detailProps> = (props) => {
-  useEffect(() => {
-    console.log(
-      '%c [ props.detailOpen ]: ',
-      'color: #bf2c9f; background: pink; font-size: 13px;',
-      props.detailOpen,
-    );
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentKey, setCurrentKey] = useState<string>('1');
+  const [detailDesc, setDetailDesc] = useState<API.DemandDetailData>({});
+
+  const onChange = (key: string) => {
+    setCurrentKey(key);
+  };
+
+  const getDemandDesc = () => {
     getDemandDetail({ id: props.id }).then((res) => {
-      console.log('%c [ res ]: ', 'color: #bf2c9f; background: pink; font-size: 13px;', res);
+      setDetailDesc(res.data);
+      // setTimeout(() => {
+      setLoading(false);
+      // }, 1000);
     });
-  }, [props.detailOpen]);
+  };
+
+  useEffect(() => {
+    if (props.detailOpen) {
+      if (currentKey === '1') {
+        setLoading(true);
+        setTimeout(() => {
+          console.log('触发了', props);
+          if (props.id) {
+            getDemandDesc();
+          }
+        }, 400);
+      }
+    }
+  }, [currentKey, props.detailOpen]);
+
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: '描述',
+      children: (
+        <div>
+          {loading ? (
+            Loading()
+          ) : (
+            <DetailDesc demandId={props.id} detailDesc={detailDesc}></DetailDesc>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: '2',
+      label: '进度',
+      children: 'Content of Tab Pane 2',
+    },
+    {
+      key: '3',
+      label: 'Tab 3',
+      children: 'Content of Tab Pane 3',
+    },
+  ];
 
   return (
     <Modal
-      width={640}
+      width={'90%'}
       // title={props.value.name}
       open={props.detailOpen}
+      onCancel={() => {
+        props.onCancel();
+      }}
     >
       <div className="content-v">
-        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
-      </div>
-      <div className="info-v">
-        <Space direction="vertical">
-          <Space>
-            <Text type="secondary">关联项目：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">需求来源：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">需求类型：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">优先级：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">状态：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">创建者：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">创建时间：</Text>
-            <Text></Text>
-          </Space>
-          <Space>
-            <Text type="secondary">指派：</Text>
-            <Text></Text>
-          </Space>
-        </Space>
+        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
       </div>
     </Modal>
   );

@@ -19,27 +19,11 @@ export type DemandListProps = {
 
 const items: MenuProps['items'] = [
   {
-    label: (
-      <a
-        onClick={() => {
-          console.log('click edit');
-        }}
-      >
-        编辑
-      </a>
-    ),
+    label: <a onClick={() => {}}>编辑</a>,
     key: '0',
   },
   {
-    label: (
-      <a
-        onClick={() => {
-          console.log('click delete');
-        }}
-      >
-        删除
-      </a>
-    ),
+    label: <a onClick={() => {}}>删除</a>,
     key: '1',
   },
   {
@@ -54,36 +38,19 @@ const DemandList: React.FC<DemandListProps> = (props) => {
 
   const [demandList, setDemandList] = useState<API.DemandItem[]>([]);
 
-  const [detailOpen, handleDetailOpen] = useState(true);
-  // const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [detailOpen, handleDetailOpen] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
 
-  const handleSplit = () => {
-    console.log(
-      '%c [ currentRow ]-103',
-      'font-size:16px; background:#93b3bf; color:#f1d8ff;',
-      currentRow,
-    );
-  };
+  const handleSplit = () => {};
 
   useEffect(() => {
-    console.log(
-      '%c [ props.id ]-105',
-      'font-size:16px; background:#93b3bf; color:#f1d8ff;',
-      props.id,
-    );
     if (props.id) {
       getDemandList({ current: 1, pageSize: 1000, program_id: props.id }, {}).then((res) => {
-        console.log('%c [ res ]-69', 'font-size:16px; background:#f3d258; color:#ffff9c;', res);
         setDemandList(res.data || []);
       });
     }
   }, [props.id]);
-
-  const showModal = () => {
-    handleDetailOpen(true);
-  };
 
   const columns: ProColumns<API.DemandItem>[] = [
     {
@@ -117,12 +84,11 @@ const DemandList: React.FC<DemandListProps> = (props) => {
             <div className="info-right-v">
               <div className="name-v">
                 <a
-                  // onClick={() => {
-                  //   handleDetailOpen(true);
-                  //   setCurrentRow(entity);
-                  //   console.log('%c [ 11111 ]: ', 'color: #bf2c9f; background: pink; font-size: 13px;', detailOpen)
-                  // }}
-                  onClick={showModal}
+                  onClick={() => {
+                    handleDetailOpen(true);
+                    setCurrentRow(entity);
+                  }}
+                  // onClick={showModal}
                 >
                   {entity.title}
                 </a>
@@ -223,39 +189,46 @@ const DemandList: React.FC<DemandListProps> = (props) => {
   ];
 
   return (
-    <ProTable<API.DemandItem, API.PageParams>
-      headerTitle={getCurTabLabel(curTab) + '列表'}
-      actionRef={actionRef}
-      rowKey={(record) => record.id + ''}
-      search={{
-        labelWidth: 120,
-      }}
-      dataSource={demandList}
-      toolBarRender={() => [
-        <Button
-          type="primary"
-          key="primary"
-          onClick={() => {
-            // handleUpdateModalOpen(true);
-          }}
-        >
-          <PlusOutlined /> 新建{getCurTabLabel(curTab)}
-        </Button>,
-      ]}
-      columns={columns}
-      rowSelection={{
-        onChange: (_, selectedRows) => {
-          console.log(
-            '%c [ selectedRows ]-197',
-            'font-size:16px; background:#7816ec; color:#bc5aff;',
-            selectedRows,
-          );
-          // setCurrentRow(selectedRows && selectedRows[0]);
-        },
-      }}
-    >
-      <DetailModal detailOpen={detailOpen} id={currentRow?.id || ''}></DetailModal>
-    </ProTable>
+    <>
+      <ProTable<API.DemandItem, API.PageParams>
+        headerTitle={getCurTabLabel(curTab) + '列表'}
+        actionRef={actionRef}
+        rowKey={(record) => record.id + ''}
+        search={{
+          labelWidth: 120,
+        }}
+        dataSource={demandList}
+        toolBarRender={() => [
+          <Button
+            type="primary"
+            key="primary"
+            onClick={() => {
+              // handleUpdateModalOpen(true);
+            }}
+          >
+            <PlusOutlined /> 新建{getCurTabLabel(curTab)}
+          </Button>,
+        ]}
+        columns={columns}
+        rowSelection={{
+          onChange: (_, selectedRows) => {
+            console.log(
+              '%c [ selectedRows ]-229',
+              'font-size:16px; background:#905abc; color:#d49eff;',
+              selectedRows,
+            );
+            // setCurrentRow(selectedRows && selectedRows[0]);
+          },
+        }}
+      ></ProTable>
+      <DetailModal
+        detailOpen={detailOpen}
+        id={currentRow?.id || ''}
+        onCancel={() => {
+          handleDetailOpen(false);
+        }}
+      ></DetailModal>
+    </>
   );
 };
 
