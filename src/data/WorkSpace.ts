@@ -93,6 +93,29 @@ export const Demand = {
   ],
 };
 
+export const statusList = [
+  {
+    id: 1,
+    label: '待处理',
+    color: '#409eff',
+  },
+  {
+    id: 2,
+    label: '处理中',
+    color: '#e6a23c',
+  },
+  {
+    id: 3,
+    label: '已完成',
+    color: '#67c23a',
+  },
+  {
+    id: 4,
+    label: '已关闭',
+    color: '#909399',
+  },
+];
+
 export const Bug = {
   priorityList: [
     {
@@ -140,28 +163,6 @@ export const Bug = {
     {
       id: 6,
       label: '界面问题',
-    },
-  ],
-  statusList: [
-    {
-      id: 1,
-      label: '待处理',
-      color: '#409eff',
-    },
-    {
-      id: 2,
-      label: '处理中',
-      color: '#e6a23c',
-    },
-    {
-      id: 3,
-      label: '已完成',
-      color: '#67c23a',
-    },
-    {
-      id: 4,
-      label: '已关闭',
-      color: '#909399',
     },
   ],
   reappearList: [

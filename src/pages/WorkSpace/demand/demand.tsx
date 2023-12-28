@@ -224,6 +224,7 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       <DetailModal
         detailOpen={detailOpen}
         id={currentRow?.id || ''}
+        type="demand"
         onCancel={() => {
           handleDetailOpen(false);
         }}

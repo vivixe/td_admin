@@ -1,13 +1,17 @@
+import { getBugDetail } from '@/services/admin/bug';
 import { getDemandDetail } from '@/services/admin/demand';
+import { getMissionDetail } from '@/services/admin/mission';
 import { LoadingOutlined } from '@ant-design/icons';
 import type { TabsProps } from 'antd';
 import { Modal, Spin, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 import DetailDesc from './detailDesc';
+import DetailProgress from './detailProgress';
 
 export type detailProps = {
   detailOpen: boolean;
   id: string;
+  type: 'demand' | 'mission' | 'bug';
   onCancel: () => void;
 };
 
@@ -18,7 +22,9 @@ const Loading = () => {
 const DetailModal: React.FC<detailProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentKey, setCurrentKey] = useState<string>('1');
-  const [detailDesc, setDetailDesc] = useState<API.DemandDetailData>({});
+  const [demandDetailDesc, setDemandDetailDesc] = useState<API.DemandDetailData>({});
+  const [missionDetailDesc, setMissionDetailDesc] = useState<API.MissionDetailData>({});
+  const [bugDetailDesc, setBugDetailDesc] = useState<API.BugDetailData>({});
 
   const onChange = (key: string) => {
     setCurrentKey(key);
@@ -26,10 +32,22 @@ const DetailModal: React.FC<detailProps> = (props) => {
 
   const getDemandDesc = () => {
     getDemandDetail({ id: props.id }).then((res) => {
-      setDetailDesc(res.data);
-      // setTimeout(() => {
+      setDemandDetailDesc(res.data);
       setLoading(false);
-      // }, 1000);
+    });
+  };
+
+  const getMissionDesc = () => {
+    getMissionDetail({ id: props.id }).then((res) => {
+      setMissionDetailDesc(res.data);
+      setLoading(false);
+    });
+  };
+
+  const getBugDesc = () => {
+    getBugDetail({ id: props.id }).then((res) => {
+      setBugDetailDesc(res.data);
+      setLoading(false);
     });
   };
 
@@ -38,9 +56,12 @@ const DetailModal: React.FC<detailProps> = (props) => {
       if (currentKey === '1') {
         setLoading(true);
         setTimeout(() => {
-          console.log('触发了', props);
-          if (props.id) {
+          if (props.id && props.type === 'demand') {
             getDemandDesc();
+          } else if (props.id && props.type === 'mission') {
+            getMissionDesc();
+          } else if (props.id && props.type === 'bug') {
+            getBugDesc();
           }
         }, 400);
       }
@@ -56,7 +77,13 @@ const DetailModal: React.FC<detailProps> = (props) => {
           {loading ? (
             Loading()
           ) : (
-            <DetailDesc demandId={props.id} detailDesc={detailDesc}></DetailDesc>
+            <DetailDesc
+              demandId={props.id}
+              demandDetailDesc={demandDetailDesc}
+              missionDetailDesc={missionDetailDesc}
+              bugDetailDesc={bugDetailDesc}
+              type={props.type}
+            ></DetailDesc>
           )}
         </div>
       ),
@@ -64,12 +91,18 @@ const DetailModal: React.FC<detailProps> = (props) => {
     {
       key: '2',
       label: '进度',
-      children: 'Content of Tab Pane 2',
-    },
-    {
-      key: '3',
-      label: 'Tab 3',
-      children: 'Content of Tab Pane 3',
+      children: (
+        <div>
+          {loading ? (
+            Loading()
+          ) : (
+            <DetailProgress
+              demandId={props.id}
+              demandDetailDesc={demandDetailDesc}
+            ></DetailProgress>
+          )}
+        </div>
+      ),
     },
   ];
 

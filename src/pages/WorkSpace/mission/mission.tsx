@@ -6,6 +6,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import DetailModal from '../components/detailModal';
 import '../demand/demand.less';
 
 const getCurTabLabel = (value: string) => {
@@ -52,6 +53,8 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   const [currentRow, setCurrentRow] = useState<API.MissionItem>();
 
   const [missionList, setMissionList] = useState<API.MissionItem[]>([]);
+
+  const [detailOpen, handleDetailOpen] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
 
@@ -117,6 +120,7 @@ const MissionList: React.FC<MissionListProps> = (props) => {
               <div className="name-v">
                 <a
                   onClick={() => {
+                    handleDetailOpen(true);
                     setCurrentRow(entity);
                   }}
                 >
@@ -217,37 +221,47 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   ];
 
   return (
-    <ProTable<API.MissionItem, API.PageParams>
-      headerTitle={getCurTabLabel(curTab) + '列表'}
-      actionRef={actionRef}
-      rowKey={(record) => record.id + ''}
-      search={{
-        labelWidth: 120,
-      }}
-      dataSource={missionList}
-      toolBarRender={() => [
-        <Button
-          type="primary"
-          key="primary"
-          onClick={() => {
-            // handleUpdateModalOpen(true);
-          }}
-        >
-          <PlusOutlined /> 新建{getCurTabLabel(curTab)}
-        </Button>,
-      ]}
-      columns={columns}
-      rowSelection={{
-        onChange: (_, selectedRows) => {
-          console.log(
-            '%c [ selectedRows ]-197',
-            'font-size:16px; background:#7816ec; color:#bc5aff;',
-            selectedRows,
-          );
-          // setCurrentRow(selectedRows && selectedRows[0]);
-        },
-      }}
-    />
+    <>
+      <ProTable<API.MissionItem, API.PageParams>
+        headerTitle={getCurTabLabel(curTab) + '列表'}
+        actionRef={actionRef}
+        rowKey={(record) => record.id + ''}
+        search={{
+          labelWidth: 120,
+        }}
+        dataSource={missionList}
+        toolBarRender={() => [
+          <Button
+            type="primary"
+            key="primary"
+            onClick={() => {
+              // handleUpdateModalOpen(true);
+            }}
+          >
+            <PlusOutlined /> 新建{getCurTabLabel(curTab)}
+          </Button>,
+        ]}
+        columns={columns}
+        rowSelection={{
+          onChange: (_, selectedRows) => {
+            console.log(
+              '%c [ selectedRows ]-197',
+              'font-size:16px; background:#7816ec; color:#bc5aff;',
+              selectedRows,
+            );
+            // setCurrentRow(selectedRows && selectedRows[0]);
+          },
+        }}
+      />
+      <DetailModal
+        detailOpen={detailOpen}
+        id={currentRow?.id || ''}
+        type="mission"
+        onCancel={() => {
+          handleDetailOpen(false);
+        }}
+      ></DetailModal>
+    </>
   );
 };
 

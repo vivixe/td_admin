@@ -21,3 +21,19 @@ export async function getMissionList(
     ...(options || {}),
   });
 }
+
+export async function getMissionDetail(
+  body: {
+    id?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.MissionDetail>('/api/my/mission/getMissionDetail', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

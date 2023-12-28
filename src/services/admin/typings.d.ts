@@ -493,6 +493,46 @@ declare namespace API {
     version_relate_type: number;
   };
 
+  type MissionDetail = {
+    data: MissionDetailData;
+    message?: string;
+    status?: number;
+  };
+
+  type MissionDetailData = {
+    assignee?: string;
+    avatar?: string;
+    complete_desc?: string;
+    complete_time?: string;
+    content?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    demand_id?: string;
+    email?: string;
+    estimate_time?: string;
+    id?: string;
+    is_del?: string;
+    is_submit?: number;
+    key?: number;
+    name?: string;
+    nickname?: string;
+    phone?: string;
+    position_name?: string;
+    priority?: string;
+    program_id?: string;
+    sex?: string;
+    source?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
+    user_pic?: string;
+    username?: string;
+    version_id?: string;
+    version_relate_type?: number;
+  };
+
   type BugList = {
     data?: BugItem[];
     message?: string;
@@ -502,9 +542,9 @@ declare namespace API {
 
   type BugItem = {
     assignee?: string;
-    avatar?: null;
-    complete_desc?: null;
-    complete_time?: null;
+    avatar?: string;
+    complete_desc?: string;
+    complete_time?: string;
     content?: string;
     cost_time?: string;
     create_time?: string;
@@ -530,7 +570,47 @@ declare namespace API {
     type?: string;
     user_pic?: string;
     username?: string;
-    version_id?: null;
+    version_id?: string;
+    version_relate_type?: number;
+  };
+
+  type BugDetail = {
+    data: BugDetailData;
+    message?: string;
+    status?: number;
+  };
+
+  type BugDetailData = {
+    assignee?: string;
+    avatar?: string;
+    complete_desc?: string;
+    complete_time?: string;
+    content?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    email?: string;
+    estimate_time?: string;
+    id?: string;
+    is_del?: string;
+    is_submit?: number;
+    key?: number;
+    name?: string;
+    nickname?: string;
+    phone?: string;
+    position_name?: string;
+    priority?: string;
+    program_id?: string;
+    reappear?: string;
+    severity?: string;
+    sex?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
+    user_pic?: string;
+    username?: string;
+    version_id?: string;
     version_relate_type?: number;
   };
 
