@@ -3,8 +3,6 @@ import { LinkOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Card, Divider, Flex, Space, Tag, Typography } from 'antd';
 import React from 'react';
 const { Text, Title, Link } = Typography;
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
 // import '../demand/demand.less';
 import './index.less';
 
@@ -45,7 +43,6 @@ const DetailModal: React.FC<DescProps> = (props) => {
         </div>
         <Divider dashed />
         <Card className="content-v">
-          {/* <ReactQuill theme="snow" value={value} onChange={setValue} /> */}
           <div dangerouslySetInnerHTML={{ __html: getValue('content', props) || '' }}></div>
         </Card>
         <Divider dashed></Divider>

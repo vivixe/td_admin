@@ -1,12 +1,14 @@
 import { getBugDetail } from '@/services/admin/bug';
 import { getDemandDetail } from '@/services/admin/demand';
 import { getMissionDetail } from '@/services/admin/mission';
-import { LoadingOutlined } from '@ant-design/icons';
+// import { LoadingOutlined } from '@ant-design/icons';
+import Loader from '@/components/Loaders/loader';
 import type { TabsProps } from 'antd';
-import { Modal, Spin, Tabs } from 'antd';
+import { Modal, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 import DetailDesc from './detailDesc';
 import DetailProgress from './detailProgress';
+import './index.less';
 
 export type detailProps = {
   detailOpen: boolean;
@@ -15,12 +17,12 @@ export type detailProps = {
   onCancel: () => void;
 };
 
-const Loading = () => {
-  return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />;
-};
+// const Loading = () => {
+//   return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />;
+// };
 
 const DetailModal: React.FC<detailProps> = (props) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [currentKey, setCurrentKey] = useState<string>('1');
   const [demandDetailDesc, setDemandDetailDesc] = useState<API.DemandDetailData>({});
   const [missionDetailDesc, setMissionDetailDesc] = useState<API.MissionDetailData>({});
@@ -63,7 +65,7 @@ const DetailModal: React.FC<detailProps> = (props) => {
           } else if (props.id && props.type === 'bug') {
             getBugDesc();
           }
-        }, 400);
+        }, 900);
       }
     }
   }, [currentKey, props.detailOpen]);
@@ -73,17 +75,21 @@ const DetailModal: React.FC<detailProps> = (props) => {
       key: '1',
       label: '描述',
       children: (
-        <div>
+        <div className="modal-content-v">
           {loading ? (
-            Loading()
+            <div className="loader-v">
+              <Loader></Loader>
+            </div>
           ) : (
-            <DetailDesc
-              demandId={props.id}
-              demandDetailDesc={demandDetailDesc}
-              missionDetailDesc={missionDetailDesc}
-              bugDetailDesc={bugDetailDesc}
-              type={props.type}
-            ></DetailDesc>
+            <div>
+              <DetailDesc
+                demandId={props.id}
+                demandDetailDesc={demandDetailDesc}
+                missionDetailDesc={missionDetailDesc}
+                bugDetailDesc={bugDetailDesc}
+                type={props.type}
+              ></DetailDesc>
+            </div>
           )}
         </div>
       ),
@@ -94,7 +100,9 @@ const DetailModal: React.FC<detailProps> = (props) => {
       children: (
         <div>
           {loading ? (
-            Loading()
+            <div style={{ width: '80%', height: '80%' }}>
+              <Loader></Loader>
+            </div>
           ) : (
             <DetailProgress
               demandId={props.id}

@@ -1,7 +1,7 @@
 import { getOssSign } from '@/services/admin/system';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
-import { message, Modal, Upload } from 'antd';
+import { Button, message, Modal, Upload } from 'antd';
 import type { RcFile, UploadFile } from 'antd/es/upload/interface';
 import { useEffect, useState } from 'react';
 
@@ -17,6 +17,7 @@ interface OSSDataType {
 interface AliyunOSSUploadProps {
   value?: UploadFile[];
   onChange?: (fileList: UploadFile[]) => void;
+  type: 'picture' | 'file';
 }
 
 const getBase64 = (file: RcFile): Promise<string> =>
@@ -27,7 +28,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const AliyunOSSUpload = ({ value, onChange }: AliyunOSSUploadProps) => {
+const AliyunOSSUpload: React.FC<AliyunOSSUploadProps> = ({ value, onChange, type }) => {
   const [OSSData, setOSSData] = useState<OSSDataType>();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -145,10 +146,18 @@ const AliyunOSSUpload = ({ value, onChange }: AliyunOSSUploadProps) => {
 
   return (
     <>
-      <Upload {...uploadProps}>{length >= 1 ? null : uploadButton}</Upload>
-      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+      {type === 'picture' ? (
+        <>
+          <Upload {...uploadProps}>{length >= 1 ? null : uploadButton}</Upload>
+          <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
+        </>
+      ) : (
+        <Upload {...uploadProps}>
+          <Button icon={<UploadOutlined />}>点击上传</Button>
+        </Upload>
+      )}
     </>
   );
 };

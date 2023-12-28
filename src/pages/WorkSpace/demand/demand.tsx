@@ -7,6 +7,7 @@ import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import DetailModal from '../components/detailModal';
+import Form from '../editForm';
 import './demand.less';
 
 const getCurTabLabel = (value: string) => {
@@ -17,20 +18,6 @@ export type DemandListProps = {
   id: string;
 };
 
-const items: MenuProps['items'] = [
-  {
-    label: <a onClick={() => {}}>编辑</a>,
-    key: '0',
-  },
-  {
-    label: <a onClick={() => {}}>删除</a>,
-    key: '1',
-  },
-  {
-    type: 'divider',
-  },
-];
-
 const curTab = '1';
 
 const DemandList: React.FC<DemandListProps> = (props) => {
@@ -38,7 +25,9 @@ const DemandList: React.FC<DemandListProps> = (props) => {
 
   const [demandList, setDemandList] = useState<API.DemandItem[]>([]);
 
-  const [detailOpen, handleDetailOpen] = useState<boolean>(false);
+  const [detailOpen, setDetailOpen] = useState<boolean>(false);
+
+  const [formOpen, setFormOpen] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
 
@@ -51,6 +40,28 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       });
     }
   }, [props.id]);
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <a
+          onClick={() => {
+            setFormOpen(true);
+          }}
+        >
+          编辑
+        </a>
+      ),
+      key: '0',
+    },
+    {
+      label: <a onClick={() => {}}>删除</a>,
+      key: '1',
+    },
+    {
+      type: 'divider',
+    },
+  ];
 
   const columns: ProColumns<API.DemandItem>[] = [
     {
@@ -85,7 +96,7 @@ const DemandList: React.FC<DemandListProps> = (props) => {
               <div className="name-v">
                 <a
                   onClick={() => {
-                    handleDetailOpen(true);
+                    setDetailOpen(true);
                     setCurrentRow(entity);
                   }}
                   // onClick={showModal}
@@ -177,8 +188,14 @@ const DemandList: React.FC<DemandListProps> = (props) => {
               拆分
             </a>
             <Divider type="vertical" />
-            <Dropdown menu={{ items }}>
-              <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <Dropdown menu={{ items }} trigger={['click']}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setCurrentRow(entity);
+                }}
+              >
                 更多 <DownOutlined />
               </a>
             </Dropdown>
@@ -226,9 +243,20 @@ const DemandList: React.FC<DemandListProps> = (props) => {
         id={currentRow?.id || ''}
         type="demand"
         onCancel={() => {
-          handleDetailOpen(false);
+          setDetailOpen(false);
         }}
       ></DetailModal>
+      <Form
+        formOpen={formOpen}
+        id={currentRow?.id || ''}
+        type="demand"
+        onCancel={() => {
+          setFormOpen(false);
+        }}
+        // onOk={() => {
+        //   setFormOpen(false);
+        // }
+      ></Form>
     </>
   );
 };

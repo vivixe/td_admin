@@ -207,7 +207,7 @@ const ProgramAdd = () => {
             getValueFromEvent={handleInput}
             extra="请上传一张不大于2M的图片。"
           >
-            <AliyunOSSUpload />
+            <AliyunOSSUpload type="picture" />
           </Form.Item>
 
           <ProFormTextArea name="demand" label="备注" placeholder="请输入备注" />
