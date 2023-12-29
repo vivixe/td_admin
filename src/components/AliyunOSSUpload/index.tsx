@@ -126,7 +126,7 @@ const AliyunOSSUpload: React.FC<AliyunOSSUploadProps> = ({ value, onChange, type
     name: 'file',
     action: OSSData?.host,
     fileList: fileList,
-    listType: 'picture-card',
+    listType: type === 'picture' ? 'picture-card' : 'text',
     maxCount: 1,
     onChange: handleChange,
     onRemove,

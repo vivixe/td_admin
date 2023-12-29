@@ -1,11 +1,12 @@
 import AliyunOSSUpload from '@/components/AliyunOSSUpload';
 import { Oss_host } from '@/data/Osshost';
-import { LinkOutlined } from '@ant-design/icons';
+import { Bug, Demand } from '@/data/WorkSpace';
+import { getDemandInfo } from '@/services/admin/demand';
 import {
   ModalForm,
   // ProFormDatePicker,
   // ProFormRadio,
-  // ProFormSelect,
+  ProFormSelect,
   ProFormText,
 } from '@ant-design/pro-components';
 import { Divider, Flex, Form } from 'antd';
@@ -18,10 +19,13 @@ export type formProps = {
   id: string;
   type: 'demand' | 'mission' | 'bug';
   onCancel: () => void;
+  // onSubmit: (values: any) => void;
 };
 
 const EditForm: React.FC<formProps> = (props) => {
   const [content, setContent] = useState<string>('');
+
+  const [demandFormInfo, setDemandFormInfo] = useState<API.DemandInfoData>({});
 
   const handleInput = (event: any) => {
     if (event.length > 0 && event[event.length - 1].status === 'done') {
@@ -29,20 +33,38 @@ const EditForm: React.FC<formProps> = (props) => {
     }
   };
 
-  // const getMissionDesc = () => {
-  //     getMissionDetail({ id: props.id }).then((res) => {
-  //       setMissionDetailDesc(res.data);
-  //       setLoading(false);
-  //     });
-  //   };
+  const getDemandFormInfo = () => {
+    getDemandInfo({ id: props.id }).then((res) => {
+      if (res.status === 0) {
+        setDemandFormInfo(res.data);
+      }
+    });
+  };
 
   useEffect(() => {
     if (props.formOpen === true) {
+      getDemandFormInfo();
     }
   }, [props.formOpen]);
 
   return (
-    <ModalForm>
+    <ModalForm
+      title="规则配置"
+      layout="horizontal"
+      open={props.formOpen}
+      // 接收一个函数，可以在 Modal 显示时进行一些操作
+      modalProps={{
+        onCancel: () => {
+          console.log('%c [ 222 ]: ', 'color: #bf2c9f; background: pink; font-size: 13px;', '222');
+          props.onCancel();
+        },
+        destroyOnClose: true,
+      }}
+      initialValues={demandFormInfo}
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      // onFinish={props.onSubmit}
+    >
       <Flex className="form-v" vertical={false}>
         <Flex vertical>
           <ProFormText
@@ -60,17 +82,44 @@ const EditForm: React.FC<formProps> = (props) => {
           <ReactQuill theme="snow" value={content} onChange={setContent} />
           <Divider dashed />
           <div>
-            <LinkOutlined style={{ color: '#999', fontSize: '12px', marginRight: '4px' }} />
-            {/* <Text type="secondary">附件：</Text> */}
-            <Form.Item
-              label="附件"
-              name="propic"
-              getValueFromEvent={handleInput}
-              extra="请上传附件。"
-            >
-              <AliyunOSSUpload type="file" />
-            </Form.Item>
+            <Flex vertical={false} align="flex-start">
+              <Form.Item label="附件" name="propic" getValueFromEvent={handleInput}>
+                <AliyunOSSUpload type="file" />
+              </Form.Item>
+            </Flex>
           </div>
+        </Flex>
+        <Flex vertical>
+          <ProFormSelect
+            name="source"
+            label="来源"
+            width="md"
+            options={Demand.sourceList.map((item) => {
+              return { label: item.label, value: item.id };
+            })}
+            rules={[
+              {
+                required: true,
+                message: '来源为必填项',
+              },
+            ]}
+          ></ProFormSelect>
+          {props.type === 'bug' && (
+            <ProFormSelect
+              name="severity"
+              label="严重程度"
+              width="md"
+              options={Bug.severityList.map((item) => {
+                return { label: item.label, value: item.id };
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: '严重程度为必填项',
+                },
+              ]}
+            ></ProFormSelect>
+          )}
         </Flex>
       </Flex>
     </ModalForm>

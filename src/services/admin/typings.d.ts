@@ -451,6 +451,33 @@ declare namespace API {
     username?: string;
   };
 
+  type DemandInfo = {
+    data: DemandInfoData;
+    message: string;
+    status: number;
+  };
+
+  type DemandInfoData = {
+    assignee: string;
+    complete_desc: string;
+    complete_time: string;
+    content: string;
+    cost_time: string;
+    create_time: string;
+    creator: string;
+    id: string;
+    is_del: string;
+    is_submit: number;
+    key: number;
+    priority: string;
+    program_id: string;
+    source: string;
+    status: string;
+    time_record: string;
+    title: string;
+    type: string;
+  };
+
   type MissionList = {
     data?: MissionItem[];
     message?: string;

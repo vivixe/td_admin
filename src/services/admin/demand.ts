@@ -38,3 +38,20 @@ export async function getDemandDetail(
     ...(options || {}),
   });
 }
+
+// 获取编辑信息 POST /api/my/demand/getDemandInfo
+export async function getDemandInfo(
+  body: {
+    id?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.DemandInfo>('/api/my/demand/getDemandInfo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
