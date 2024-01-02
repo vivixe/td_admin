@@ -276,7 +276,7 @@ declare namespace API {
     programid: string;
     propic: string;
     status: string;
-    teamid: string;
+    team_id: string;
     team_intro: string;
     team_name: string;
     team_pic: string;
@@ -458,24 +458,24 @@ declare namespace API {
   };
 
   type DemandInfoData = {
-    assignee: string;
-    complete_desc: string;
-    complete_time: string;
-    content: string;
-    cost_time: string;
-    create_time: string;
-    creator: string;
-    id: string;
-    is_del: string;
-    is_submit: number;
-    key: number;
-    priority: string;
-    program_id: string;
-    source: string;
-    status: string;
-    time_record: string;
-    title: string;
-    type: string;
+    assignee?: string;
+    complete_desc?: string;
+    complete_time?: string;
+    content?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    id?: string;
+    is_del?: string;
+    is_submit?: number;
+    key?: number;
+    priority?: string;
+    program_id?: string;
+    source?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
   };
 
   type MissionList = {

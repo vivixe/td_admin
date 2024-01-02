@@ -16,6 +16,7 @@ const getCurTabLabel = (value: string) => {
 
 export type DemandListProps = {
   id: string;
+  team_id: string;
 };
 
 const curTab = '1';
@@ -250,12 +251,19 @@ const DemandList: React.FC<DemandListProps> = (props) => {
         formOpen={formOpen}
         id={currentRow?.id || ''}
         type="demand"
+        team_id={props.team_id}
         onCancel={() => {
           setFormOpen(false);
         }}
-        // onOk={() => {
-        //   setFormOpen(false);
-        // }
+        onSubmit={async (value, content) => {
+          console.log(
+            '%c [ value ]-259',
+            'font-size:16px; background:#e4aab5; color:#ffeef9;',
+            value,
+            content,
+          );
+          setFormOpen(false);
+        }}
       ></Form>
     </>
   );

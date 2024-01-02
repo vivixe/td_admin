@@ -76,3 +76,21 @@ export async function removeMember(
     ...(options || {}),
   });
 }
+
+// 成员选择 POST /api/my/team/getMemberSelect
+export async function getMemberSelect(
+  body: {
+    id?: string;
+    type: 'all' | 'team';
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.TeamMemberList>(base_url + '/getMemberSelect', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

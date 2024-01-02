@@ -97,7 +97,7 @@ export const errorConfig: RequestConfig = {
         if (token) {
           config.headers = {
             ...config.headers,
-            Authorization: token ,
+            Authorization: token,
           };
         }
       }
@@ -110,8 +110,15 @@ export const errorConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
-
-      if (data?.success === false) {
+      console.log('%c [ data ]-113', 'font-size:16px; background:#b2bbc4; color:#f6ffff;', data);
+      if (data?.status === 99) {
+        message.warning('会话已过期');
+        setTimeout(() => {
+          // 跳转到登录页面
+          window.location.href = '/user/login';
+        }, 500);
+      }
+      if (data?.status === 1) {
         message.error('请求失败！');
       }
       return response;

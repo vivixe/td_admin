@@ -186,7 +186,7 @@ const WorkSpaceHome = () => {
         }}
       >
         {curTab === '1' ? (
-          <DemandList id={program_id || ''} />
+          <DemandList id={program_id || ''} team_id={detail?.data?.baseInfo.team_id || ''} />
         ) : curTab === '2' ? (
           <MissionList id={program_id || ''} />
         ) : curTab === '3' ? (
