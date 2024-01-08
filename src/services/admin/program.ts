@@ -83,3 +83,36 @@ export async function getProgramSelect(options?: { [key: string]: any }) {
     ...(options || {}),
   });
 }
+
+export async function getProgramDocument(
+  body: {
+    id?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.ProgramDocument>('/api/my/program/getDocInfo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+export async function saveProgramDocument(
+  body: {
+    id: string;
+    value: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.ProgramDocument>('/api/my/program/saveDocInfo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

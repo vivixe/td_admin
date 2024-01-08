@@ -6,6 +6,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import DetailDocument from '../components/detailDocument';
 import DetailModal from '../components/detailModal';
 import Form from '../editForm';
 import './demand.less';
@@ -30,9 +31,15 @@ const DemandList: React.FC<DemandListProps> = (props) => {
 
   const [formOpen, setFormOpen] = useState<boolean>(false);
 
+  const [docModalOpen, setDocModalOpen] = useState<boolean>(false);
+
   const actionRef = useRef<ActionType>();
 
   const handleSplit = () => {};
+
+  const handleEditDocument = () => {
+    setDocModalOpen(true);
+  };
 
   useEffect(() => {
     if (props.id) {
@@ -56,8 +63,12 @@ const DemandList: React.FC<DemandListProps> = (props) => {
       key: '0',
     },
     {
-      label: <a onClick={() => {}}>删除</a>,
+      label: <a onClick={handleEditDocument}>文档</a>,
       key: '1',
+    },
+    {
+      label: <a onClick={() => {}}>删除</a>,
+      key: '2',
     },
     {
       type: 'divider',
@@ -247,6 +258,14 @@ const DemandList: React.FC<DemandListProps> = (props) => {
           setDetailOpen(false);
         }}
       ></DetailModal>
+      <DetailDocument
+        docModalOpen={docModalOpen}
+        id={currentRow?.id || ''}
+        type="demand"
+        onCancel={() => {
+          setDocModalOpen(false);
+        }}
+      ></DetailDocument>
       <Form
         formOpen={formOpen}
         id={currentRow?.id || ''}

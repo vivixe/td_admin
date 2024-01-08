@@ -651,4 +651,10 @@ declare namespace API {
     program_id?: string;
     name?: string;
   };
+
+  type ProgramDocument = {
+    data?: string;
+    status?: number;
+    message?: string;
+  };
 }

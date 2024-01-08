@@ -6,6 +6,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Tag } from 'antd';
 import { useEffect, useRef, useState } from 'react';
+import DetailDocument from '../components/detailDocument';
 import DetailModal from '../components/detailModal';
 import '../demand/demand.less';
 
@@ -17,36 +18,6 @@ export type MissionListProps = {
   id: string;
 };
 
-const items: MenuProps['items'] = [
-  {
-    label: (
-      <a
-        onClick={() => {
-          console.log('click edit');
-        }}
-      >
-        编辑
-      </a>
-    ),
-    key: '0',
-  },
-  {
-    label: (
-      <a
-        onClick={() => {
-          console.log('click delete');
-        }}
-      >
-        删除
-      </a>
-    ),
-    key: '1',
-  },
-  {
-    type: 'divider',
-  },
-];
-
 const curTab = '1';
 
 const MissionList: React.FC<MissionListProps> = (props) => {
@@ -55,6 +26,8 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   const [missionList, setMissionList] = useState<API.MissionItem[]>([]);
 
   const [detailOpen, handleDetailOpen] = useState<boolean>(false);
+
+  const [docModalOpen, setDocModalOpen] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
 
@@ -66,11 +39,49 @@ const MissionList: React.FC<MissionListProps> = (props) => {
     );
   };
 
+  const handleEditDocument = () => {
+    setDocModalOpen(true);
+  };
+
   useEffect(() => {
     getMissionList({ current: 1, pageSize: 1000, program_id: props.id }, {}).then((res) => {
       setMissionList(res.data || []);
     });
   }, [props.id]);
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <a
+          onClick={() => {
+            console.log('click edit');
+          }}
+        >
+          编辑
+        </a>
+      ),
+      key: '0',
+    },
+    {
+      label: <a onClick={handleEditDocument}>文档</a>,
+      key: '1',
+    },
+    {
+      label: (
+        <a
+          onClick={() => {
+            console.log('click delete');
+          }}
+        >
+          删除
+        </a>
+      ),
+      key: '2',
+    },
+    {
+      type: 'divider',
+    },
+  ];
 
   const columns: ProColumns<API.MissionItem>[] = [
     {
@@ -253,6 +264,14 @@ const MissionList: React.FC<MissionListProps> = (props) => {
           },
         }}
       />
+      <DetailDocument
+        docModalOpen={docModalOpen}
+        id={currentRow?.id || ''}
+        type="demand"
+        onCancel={() => {
+          setDocModalOpen(false);
+        }}
+      ></DetailDocument>
       <DetailModal
         detailOpen={detailOpen}
         id={currentRow?.id || ''}
