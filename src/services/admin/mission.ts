@@ -37,3 +37,20 @@ export async function getMissionDetail(
     ...(options || {}),
   });
 }
+
+// 获取编辑信息 POST /api/my/mission/getMissionInfo
+export async function getMissionInfo(
+  body: {
+    id?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.MissionInfo>('/api/my/mission/getMissionInfo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

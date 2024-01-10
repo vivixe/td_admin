@@ -2,12 +2,12 @@ import AliyunOSSUpload from '@/components/AliyunOSSUpload';
 import { Oss_host } from '@/data/Osshost';
 import { Bug, Demand } from '@/data/WorkSpace';
 import { getDemandInfo } from '@/services/admin/demand';
+import { getMissionInfo } from '@/services/admin/mission';
 import { getUserSelect } from '@/services/admin/program';
 import { getMemberSelect } from '@/services/admin/team';
 import {
   ModalForm,
   ProFormDatePicker,
-  // ProFormRadio,
   ProFormSelect,
   ProFormText,
 } from '@ant-design/pro-components';
@@ -35,6 +35,8 @@ const EditForm: React.FC<formProps> = (props) => {
 
   const [demandFormInfo, setDemandFormInfo] = useState<API.DemandInfoData>({});
 
+  const [missionFormInfo, setMissionFormInfo] = useState<API.MissionInfoData>({});
+
   const handleInput = (event: any) => {
     if (event.length > 0 && event[event.length - 1].status === 'done') {
       return document.location.protocol + Oss_host + '/' + event[event.length - 1].url;
@@ -50,11 +52,22 @@ const EditForm: React.FC<formProps> = (props) => {
     });
   };
 
+  const getMissionFormInfo = () => {
+    getMissionInfo({ id: props.id }).then((res) => {
+      if (res.status === 0) {
+        setMissionFormInfo(res.data);
+        setContent(res.data.content || '');
+      }
+    });
+  };
+
   useEffect(() => {
-    if (props.formOpen === true) {
+    if (props.id && props.type === 'demand') {
       getDemandFormInfo();
+    } else if (props.id && props.type === 'mission') {
+      getMissionFormInfo();
     }
-  }, [props.formOpen]);
+  }, [props.id]);
 
   return (
     <ModalForm
@@ -70,7 +83,9 @@ const EditForm: React.FC<formProps> = (props) => {
         },
         destroyOnClose: true,
       }}
-      initialValues={demandFormInfo}
+      initialValues={
+        props.type === 'demand' ? demandFormInfo : props.type === 'mission' ? missionFormInfo : {}
+      }
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       onFinish={(values) => props.onSubmit(values, content)}

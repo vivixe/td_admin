@@ -47,7 +47,7 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const curTab = '1';
+const curTab = '3';
 
 const BugList: React.FC<BugListProps> = (props) => {
   const [currentRow, setCurrentRow] = useState<API.BugItem>();

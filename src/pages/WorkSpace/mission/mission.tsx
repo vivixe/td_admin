@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import DetailDocument from '../components/detailDocument';
 import DetailModal from '../components/detailModal';
 import '../demand/demand.less';
+import Form from '../editForm';
 
 const getCurTabLabel = (value: string) => {
   return tabsList.find((item) => item.key === value)?.tab;
@@ -16,9 +17,10 @@ const getCurTabLabel = (value: string) => {
 
 export type MissionListProps = {
   id: string;
+  team_id: string;
 };
 
-const curTab = '1';
+const curTab = '2';
 
 const MissionList: React.FC<MissionListProps> = (props) => {
   const [currentRow, setCurrentRow] = useState<API.MissionItem>();
@@ -26,6 +28,8 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   const [missionList, setMissionList] = useState<API.MissionItem[]>([]);
 
   const [detailOpen, handleDetailOpen] = useState<boolean>(false);
+
+  const [formOpen, setFormOpen] = useState<boolean>(false);
 
   const [docModalOpen, setDocModalOpen] = useState<boolean>(false);
 
@@ -54,7 +58,7 @@ const MissionList: React.FC<MissionListProps> = (props) => {
       label: (
         <a
           onClick={() => {
-            console.log('click edit');
+            setFormOpen(true);
           }}
         >
           编辑
@@ -220,8 +224,14 @@ const MissionList: React.FC<MissionListProps> = (props) => {
               拆分
             </a>
             <Divider type="vertical" />
-            <Dropdown menu={{ items }}>
-              <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <Dropdown menu={{ items }} trigger={['click']}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => {
+                  setCurrentRow(entity);
+                  e.preventDefault();
+                }}
+              >
                 更多 <DownOutlined />
               </a>
             </Dropdown>
@@ -280,6 +290,24 @@ const MissionList: React.FC<MissionListProps> = (props) => {
           handleDetailOpen(false);
         }}
       ></DetailModal>
+      <Form
+        formOpen={formOpen}
+        id={currentRow?.id || ''}
+        type="mission"
+        team_id={props.team_id}
+        onCancel={() => {
+          setFormOpen(false);
+        }}
+        onSubmit={async (value, content) => {
+          console.log(
+            '%c [ value ]-259',
+            'font-size:16px; background:#e4aab5; color:#ffeef9;',
+            value,
+            content,
+          );
+          setFormOpen(false);
+        }}
+      ></Form>
     </>
   );
 };

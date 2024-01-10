@@ -560,6 +560,37 @@ declare namespace API {
     version_relate_type?: number;
   };
 
+  type MissionInfo = {
+    data: MissionInfoData;
+    message?: string;
+    status?: number;
+  };
+
+  type MissionInfoData = {
+    assignee?: string;
+    complete_desc?: string;
+    complete_time?: string;
+    content?: string;
+    cost_time?: string;
+    create_time?: string;
+    creator?: string;
+    demand_id?: string;
+    estimate_time?: string;
+    id?: string;
+    is_del?: string;
+    is_submit?: number;
+    key?: number;
+    priority?: string;
+    program_id?: string;
+    source?: string;
+    status?: string;
+    time_record?: string;
+    title?: string;
+    type?: string;
+    version_id?: string;
+    version_relate_type?: number;
+  };
+
   type BugList = {
     data?: BugItem[];
     message?: string;
