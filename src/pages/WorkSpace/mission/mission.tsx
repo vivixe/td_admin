@@ -53,39 +53,51 @@ const MissionList: React.FC<MissionListProps> = (props) => {
     });
   }, [props.id]);
 
-  const items: MenuProps['items'] = [
-    {
-      label: (
-        <a
-          onClick={() => {
-            setFormOpen(true);
-          }}
-        >
-          编辑
-        </a>
-      ),
-      key: '0',
-    },
-    {
-      label: <a onClick={handleEditDocument}>文档</a>,
-      key: '1',
-    },
-    {
-      label: (
-        <a
-          onClick={() => {
-            console.log('click delete');
-          }}
-        >
-          删除
-        </a>
-      ),
-      key: '2',
-    },
-    {
-      type: 'divider',
-    },
-  ];
+  const setItems = (item: API.MissionItem) => {
+    const items: MenuProps['items'] = [
+      {
+        label: (
+          <a
+            onClick={() => {
+              setFormOpen(true);
+            }}
+          >
+            编辑
+          </a>
+        ),
+        key: '0',
+      },
+      {
+        label: (
+          <a
+            onClick={() => {
+              setCurrentRow(item);
+              handleEditDocument();
+            }}
+          >
+            文档
+          </a>
+        ),
+        key: '1',
+      },
+      {
+        label: (
+          <a
+            onClick={() => {
+              console.log('click delete');
+            }}
+          >
+            删除
+          </a>
+        ),
+        key: '2',
+      },
+      {
+        type: 'divider',
+      },
+    ];
+    return { items };
+  };
 
   const columns: ProColumns<API.MissionItem>[] = [
     {
@@ -224,7 +236,7 @@ const MissionList: React.FC<MissionListProps> = (props) => {
               拆分
             </a>
             <Divider type="vertical" />
-            <Dropdown menu={{ items }} trigger={['click']}>
+            <Dropdown menu={setItems(entity)} trigger={['hover']}>
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => {
@@ -270,7 +282,6 @@ const MissionList: React.FC<MissionListProps> = (props) => {
               'font-size:16px; background:#7816ec; color:#bc5aff;',
               selectedRows,
             );
-            // setCurrentRow(selectedRows && selectedRows[0]);
           },
         }}
       />

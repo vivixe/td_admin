@@ -1,17 +1,13 @@
-import { getWorkerList,updateWorkerInfo } from '@/services/admin/worker';
+import { getWorkerList, updateWorkerInfo } from '@/services/admin/worker';
 import { PlusOutlined } from '@ant-design/icons';
-import {
-  FooterToolbar,
-  PageContainer,
-  ProTable,
-} from '@ant-design/pro-components';
+import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 // 引入antd图标
+import PositionInfo from '@/components/PositionInfo';
 import { MailOutlined, ManOutlined, MobileOutlined, WomanOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
-import { Avatar, Button, Popover,message } from 'antd';
+import { Avatar, Button, message, Popover } from 'antd';
 import React, { useRef, useState } from 'react';
 import WorkerForm from './components/WorkerForm';
-import PositionInfo from '@/components/PositionInfo';
 
 const handleRemove = async (selectedRows: API.WorkerListItem[]) => {
   // const hide = message.loading('正在删除');
@@ -31,7 +27,6 @@ const handleRemove = async (selectedRows: API.WorkerListItem[]) => {
 };
 
 const WorkerList: React.FC = () => {
-
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
   const [showDetail] = useState<boolean>(false);
@@ -50,32 +45,33 @@ const WorkerList: React.FC = () => {
     });
   };
 
-  // 声明一个content变量，用于存放弹出框的内容，包括姓名、职位、联系方式
-  const content = (
-    <div style={{ display: 'flex' }}>
-      <Avatar size={64} src={currentRow?.avatar} shape="square">
-        {currentRow?.name}
-      </Avatar>
-      <div style={{ marginLeft: 8 }}>
-        <p>年龄：{currentRow?.age}</p>
-        {currentRow?.sex === 'male' ? (
-          <p>
-            性别：
-            <ManOutlined style={{ color: '#08c' }} />
-          </p>
-        ) : (
-          <p>
-            性别：
-            <WomanOutlined style={{ color: 'rgb(255, 173, 210)' }} />
-          </p>
-        )}
+  const setContent = (entity: API.WorkerListItem) => {
+    return (
+      <div style={{ display: 'flex' }}>
+        <Avatar size={64} src={entity?.avatar} shape="square">
+          {entity?.name}
+        </Avatar>
+        <div style={{ marginLeft: 8 }}>
+          <p>年龄：{entity?.age}</p>
+          {entity?.sex === 'male' ? (
+            <p>
+              性别：
+              <ManOutlined style={{ color: '#08c' }} />
+            </p>
+          ) : (
+            <p>
+              性别：
+              <WomanOutlined style={{ color: 'rgb(255, 173, 210)' }} />
+            </p>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const columns: ProColumns<API.WorkerListItem>[] = [
     {
-      title: "职员姓名",
+      title: '职员姓名',
       dataIndex: 'name',
       tip: '规则名称是唯一的 key',
       render: (dom, entity) => {
@@ -85,7 +81,7 @@ const WorkerList: React.FC = () => {
               setCurrentRow(entity);
             }}
           >
-            <Popover content={content} title={entity.name} trigger="click">
+            <Popover content={setContent(entity)} title={entity.name} trigger="hover">
               {dom}
             </Popover>
           </a>
@@ -93,7 +89,7 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: "职员ID",
+      title: '职员ID',
       dataIndex: 'id',
       hideInForm: true,
       hideInSearch: true,
@@ -110,7 +106,7 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: "职位",
+      title: '职位',
       dataIndex: 'position_name',
       render: (dom, entity) => {
         return (
@@ -119,16 +115,13 @@ const WorkerList: React.FC = () => {
               setCurrentRow(entity);
             }}
           >
-            <PositionInfo
-                name={entity.position_name ?? ''}
-                type={entity.position_type ?? ''}
-            />
+            <PositionInfo name={entity.position_name ?? ''} type={entity.position_type ?? ''} />
           </div>
         );
       },
     },
     {
-      title: "联系方式",
+      title: '联系方式',
       dataIndex: 'contact',
       render: (dom, entity) => {
         return (
@@ -146,27 +139,22 @@ const WorkerList: React.FC = () => {
       },
     },
     {
-      title: "状态",
+      title: '状态',
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         default: {
-          text: (
-            "未激活"
-          ),
+          text: '未激活',
           status: 'Default',
         },
         linked: {
-          text: (
-            "已激活"
-          ),
+          text: '已激活',
           status: 'Success',
         },
-        
       },
     },
     {
-      title: "操作",
+      title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -178,7 +166,7 @@ const WorkerList: React.FC = () => {
           }}
         >
           编辑
-        </a>
+        </a>,
       ],
     },
   ];
@@ -201,7 +189,7 @@ const WorkerList: React.FC = () => {
             }}
           >
             <PlusOutlined /> 新建职员
-          </Button>
+          </Button>,
         ]}
         request={getWorkerList}
         columns={columns}
@@ -215,10 +203,7 @@ const WorkerList: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              已选择{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              项
-              &nbsp;&nbsp;
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a> 项 &nbsp;&nbsp;
               <span>
                 {/* 总共滴{' '} */}
                 {/* {selectedRowsState.reduce((pre, item) => pre + item.id!, 0)}{' '} */}
@@ -236,20 +221,26 @@ const WorkerList: React.FC = () => {
           >
             撤硕1
           </Button>
-          <Button type="primary">
-            撤硕2
-          </Button>
+          <Button type="primary">撤硕2</Button>
         </FooterToolbar>
       )}
       {contextHolder}
       <WorkerForm
         onSubmit={async (value) => {
-          console.log('%c [ value ]-322', 'font-size:16px; background:#94b3a0; color:#d8f7e4;', value)
+          console.log(
+            '%c [ value ]-322',
+            'font-size:16px; background:#94b3a0; color:#d8f7e4;',
+            value,
+          );
           const res = await updateWorkerInfo(value);
-          console.log('%c [ success ]-285', 'font-size:16px; background:#eec713; color:#ffff57;', res)
+          console.log(
+            '%c [ success ]-285',
+            'font-size:16px; background:#eec713; color:#ffff57;',
+            res,
+          );
           if (res.status === 0) {
             // 提示更新成功
-            
+
             success();
             handleUpdateModalOpen(false);
             setCurrentRow(undefined);
@@ -261,7 +252,7 @@ const WorkerList: React.FC = () => {
         onCancel={() => {
           handleUpdateModalOpen(false);
           if (!showDetail) {
-              setCurrentRow(undefined);
+            setCurrentRow(undefined);
           }
         }}
         updateModalOpen={updateModalOpen}

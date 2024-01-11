@@ -49,31 +49,43 @@ const DemandList: React.FC<DemandListProps> = (props) => {
     }
   }, [props.id]);
 
-  const items: MenuProps['items'] = [
-    {
-      label: (
-        <a
-          onClick={() => {
-            setFormOpen(true);
-          }}
-        >
-          编辑
-        </a>
-      ),
-      key: '0',
-    },
-    {
-      label: <a onClick={handleEditDocument}>文档</a>,
-      key: '1',
-    },
-    {
-      label: <a onClick={() => {}}>删除</a>,
-      key: '2',
-    },
-    {
-      type: 'divider',
-    },
-  ];
+  const setItems = (item: API.DemandItem) => {
+    const items: MenuProps['items'] = [
+      {
+        label: (
+          <a
+            onClick={() => {
+              setFormOpen(true);
+            }}
+          >
+            编辑
+          </a>
+        ),
+        key: '0',
+      },
+      {
+        label: (
+          <a
+            onClick={() => {
+              setCurrentRow(item);
+              handleEditDocument();
+            }}
+          >
+            文档
+          </a>
+        ),
+        key: '1',
+      },
+      {
+        label: <a onClick={() => {}}>删除</a>,
+        key: '2',
+      },
+      {
+        type: 'divider',
+      },
+    ];
+    return { items };
+  };
 
   const columns: ProColumns<API.DemandItem>[] = [
     {
@@ -200,7 +212,7 @@ const DemandList: React.FC<DemandListProps> = (props) => {
               拆分
             </a>
             <Divider type="vertical" />
-            <Dropdown menu={{ items }} trigger={['click']}>
+            <Dropdown menu={setItems(entity)} trigger={['hover']}>
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => {
