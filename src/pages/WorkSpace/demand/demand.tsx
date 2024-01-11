@@ -55,7 +55,10 @@ const DemandList: React.FC<DemandListProps> = (props) => {
         label: (
           <a
             onClick={() => {
-              setFormOpen(true);
+              setCurrentRow(item);
+              setTimeout(() => {
+                setFormOpen(true);
+              }, 100);
             }}
           >
             编辑

@@ -59,7 +59,10 @@ const MissionList: React.FC<MissionListProps> = (props) => {
         label: (
           <a
             onClick={() => {
-              setFormOpen(true);
+              setCurrentRow(item);
+              setTimeout(() => {
+                setFormOpen(true);
+              }, 100);
             }}
           >
             编辑
@@ -240,7 +243,6 @@ const MissionList: React.FC<MissionListProps> = (props) => {
               <a
                 className="ant-dropdown-link"
                 onClick={(e) => {
-                  setCurrentRow(entity);
                   e.preventDefault();
                 }}
               >
