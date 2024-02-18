@@ -105,8 +105,11 @@ const DetailModal: React.FC<detailProps> = (props) => {
             </div>
           ) : (
             <DetailProgress
-              demandId={props.id}
+              id={props.id}
+              type={props.type}
               demandDetailDesc={demandDetailDesc}
+              missionDetailDesc={missionDetailDesc}
+              bugDetailDesc={bugDetailDesc}
             ></DetailProgress>
           )}
         </div>
@@ -120,6 +123,9 @@ const DetailModal: React.FC<detailProps> = (props) => {
       // title={props.value.name}
       open={props.detailOpen}
       onCancel={() => {
+        props.onCancel();
+      }}
+      onOk={() => {
         props.onCancel();
       }}
     >

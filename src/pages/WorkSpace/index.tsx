@@ -39,18 +39,7 @@ const WorkSpaceHome = () => {
     getProgramSelect().then((res) => {
       if (res.status === 0) {
         setProgramList(res.data);
-        console.log(
-          '%c [ 111 ]: ',
-          'color: #bf2c9f; background: pink; font-size: 13px;',
-          program_id,
-          programList,
-        );
         if (program_id === undefined && res.data?.length) {
-          console.log(
-            '%c [ programList ]-107',
-            'font-size:16px; background:#93b3bf; color:#f1d8ff;',
-            programList,
-          );
           program_id = res.data[0].program_id;
           history.push({
             pathname: '/workspace/home',
@@ -103,6 +92,10 @@ const WorkSpaceHome = () => {
 
   const handleEditDocument = () => {
     setDocModalOpen(true);
+  };
+
+  const setCookie = (name: string, value: string) => {
+    document.cookie = `${name}=${value};`;
   };
 
   return (
@@ -160,6 +153,10 @@ const WorkSpaceHome = () => {
               pathname: '/workspace/home',
               search: 'id=' + value.program_id,
             });
+            // 当前项目id存入cookie
+            if (value.program_id) {
+              setCookie('program_id', value.program_id);
+            }
           }}
         ></SelectProgram>
         <DetailDocument
