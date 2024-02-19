@@ -148,10 +148,10 @@ const DetailProgress: React.FC<DescProps> = (props) => {
             dataSource={
               JSON.parse(
                 props.type === 'demand'
-                  ? props.demandDetailDesc.time_record || ''
+                  ? props.demandDetailDesc.time_record || '[]'
                   : props.type === 'mission'
-                  ? props.missionDetailDesc.time_record || ''
-                  : props.bugDetailDesc.time_record || '',
+                  ? props.missionDetailDesc.time_record || '[]'
+                  : props.bugDetailDesc.time_record || '[]',
               ) || []
             }
           />

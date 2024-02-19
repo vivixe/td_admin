@@ -58,14 +58,6 @@ const BugList: React.FC<BugListProps> = (props) => {
 
   const actionRef = useRef<ActionType>();
 
-  const handleSplit = () => {
-    console.log(
-      '%c [ currentRow ]-103',
-      'font-size:16px; background:#93b3bf; color:#f1d8ff;',
-      currentRow,
-    );
-  };
-
   useEffect(() => {
     console.log(
       '%c [ props.id ]-105',
@@ -217,11 +209,11 @@ const BugList: React.FC<BugListProps> = (props) => {
           <div>
             <a
               onClick={() => {
+                handleDetailOpen(true);
                 setCurrentRow(entity);
-                handleSplit();
               }}
             >
-              拆分
+              查看
             </a>
             <Divider type="vertical" />
             <Dropdown menu={{ items }}>

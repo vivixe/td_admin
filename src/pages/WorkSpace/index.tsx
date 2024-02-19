@@ -39,11 +39,24 @@ const WorkSpaceHome = () => {
     getProgramSelect().then((res) => {
       if (res.status === 0) {
         setProgramList(res.data);
-        if (program_id === undefined && res.data?.length) {
-          program_id = res.data[0].program_id;
-          history.push({
-            pathname: '/workspace/home',
-            search: 'id=' + program_id,
+        // 如果没有选择的项目，首先从cookie中获取项目id
+        if (program_id === undefined) {
+          let cookieList = document.cookie.split('; ');
+          cookieList.some((item) => {
+            if (item.includes('program_id')) {
+              let program_id = item.split('=')[1];
+              history.push({
+                pathname: '/workspace/home',
+                search: 'id=' + program_id,
+              });
+              // 如果cookie中没有项目id，那么就默认选择第一个项目
+            } else if (res.data?.length) {
+              history.push({
+                pathname: '/workspace/home',
+                search: 'id=' + res.data[0].program_id,
+              });
+            }
+            return false;
           });
         }
       }
@@ -149,14 +162,20 @@ const WorkSpaceHome = () => {
           }}
           onSubmit={async (value) => {
             handleSelectProgramModalOpen(false);
+            // 当前项目id存入cookie
+            if (value.program_id) {
+              console.log(
+                '%c [ value.program_id ]-154',
+                'font-size:16px; background:#5baac4; color:#9feeff;',
+                value.program_id,
+              );
+              // 切换项目后，将id存入cookie
+              setCookie('program_id', value.program_id);
+            }
             history.push({
               pathname: '/workspace/home',
               search: 'id=' + value.program_id,
             });
-            // 当前项目id存入cookie
-            if (value.program_id) {
-              setCookie('program_id', value.program_id);
-            }
           }}
         ></SelectProgram>
         <DetailDocument
