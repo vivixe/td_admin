@@ -78,6 +78,12 @@ export default [
         path: '/worker/team',
         component: './TeamList',
       },
+      {
+        name: 'attendance-manage',
+        icon: 'table',
+        path: '/worker/attendance',
+        component: './AttendanceManage',
+      },
     ],
   },
   {

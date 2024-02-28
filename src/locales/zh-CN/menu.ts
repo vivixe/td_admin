@@ -30,6 +30,7 @@ export default {
   'menu.worker.worker-add': '添加职员',
   'menu.worker.worker-edit': '编辑职员',
   'menu.worker.team-list': '团队管理',
+  'menu.worker.attendance-manage': '考勤管理',
   'menu.workspace': '工作台',
   'menu.workspace.workspace-home': '工作台首页',
   'menu.info': '信息管理',
