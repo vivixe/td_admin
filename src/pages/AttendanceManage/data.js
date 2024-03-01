@@ -3,6 +3,8 @@ export const data = [
     _id: '65dc5025b6fc0ca67d462ca1',
     index: 0,
     date: '2024-02-24',
+    todoEvents: 2,
+    finishedEvents: 1,
     signLists: [
       {
         name: 'Fowler Powers',
@@ -146,6 +148,8 @@ export const data = [
     _id: '65dc50252629c88b7c23c295',
     index: 1,
     date: '2024-02-25',
+    todoEvents: 1,
+    finishedEvents: 1,
     signLists: [
       {
         name: 'Ortega Lamb',
@@ -281,6 +285,8 @@ export const data = [
     _id: '65dc5025ccba58fc9f5c579a',
     index: 2,
     date: '2024-02-26',
+    todoEvents: 3,
+    finishedEvents: 2,
     signLists: [
       {
         name: 'Rose Newman',
@@ -424,6 +430,8 @@ export const data = [
     _id: '65dc502527848e5cbc7af78d',
     index: 3,
     date: '2024-02-27',
+    todoEvents: 2,
+    finishedEvents: 2,
     signLists: [
       {
         name: 'Randi Reilly',
@@ -559,6 +567,8 @@ export const data = [
     _id: '65dc502558ab9e5c248ab9b0',
     index: 4,
     date: '2024-02-28',
+    todoEvents: 0,
+    finishedEvents: 0,
     signLists: [
       {
         name: 'Madeline Odonnell',

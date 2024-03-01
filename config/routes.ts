@@ -145,6 +145,29 @@ export default [
     ],
   },
   {
+    name: 'setting',
+    path: '/setting',
+    icon: 'tool',
+    routes: [
+      {
+        path: '/setting',
+        redirect: '/setting/user',
+      },
+      {
+        name: 'setting-user',
+        icon: 'user',
+        path: '/setting/user',
+        component: './Setting/User',
+      },
+      {
+        name: 'setting-general',
+        icon: 'user',
+        path: '/setting/setting',
+        component: './Setting/Setting',
+      },
+    ],
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

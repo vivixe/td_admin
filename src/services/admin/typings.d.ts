@@ -382,6 +382,21 @@ declare namespace API {
     status: number;
   };
 
+  type SystemInfo = {
+    data: {
+      attend_distance: string;
+      company_loc: string;
+      company_name: string;
+      company_pos: string;
+      default_password: string;
+      off_duty_time: string;
+      on_duty_time: string;
+      scp: string;
+    };
+    message?: string;
+    status?: number;
+  };
+
   type DemandList = {
     data?: DemandItem[];
     message?: string;

@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '轻智云台',
+  title: 'demo',
   pwa: true,
   logo: '/logo.png',
   iconfontUrl: '',

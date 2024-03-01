@@ -1,13 +1,19 @@
 .events {
-  display: flex;
-  flex-direction: column;
-  .name {
-    font-weight: bold;
-    font-size: 1em;
-  }
-  .sub {
+  .event {
     color: #999;
-    font-weight: 300;
-    font-size: 0.8em;
+    &:hover {
+      color: @primary-color;
+      transition: 0.3s;
+    }
+    .name {
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .sub {
+      margin-left: 4px;
+      font-weight: 300;
+      font-size: 0.8em;
+    }
   }
 }
